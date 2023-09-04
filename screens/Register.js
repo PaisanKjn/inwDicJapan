@@ -27,6 +27,7 @@ const Register = ({navigation}) => {
     }
   };
 
+  /*Getting object???*/
   getMyObject = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('user')
