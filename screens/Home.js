@@ -7,6 +7,6 @@ const Home = ({navigation}) => {
       <Text>Home</Text>
     </View>
   )
-}
+} 
 
 export default Home

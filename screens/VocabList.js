@@ -7,6 +7,6 @@ const VocabList = ({navigation}) => {
       <Text>VocabList</Text>
     </View>
   )
-}
+} 
 
 export default VocabList
