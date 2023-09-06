@@ -18,7 +18,7 @@ const Home = () => {
           justifyContent: "space-around",
           flexDirection: "row",
           paddingTop: 50,
-          //flex: 1,
+          
         }}
       >
         <TextInput
@@ -40,7 +40,7 @@ const Home = () => {
           justifyContent: "space-around",
           flexDirection: "row",
           paddingVertical: 400,
-          //flex: 1,
+          
         }}
       >
         <TouchableOpacity
@@ -53,7 +53,7 @@ const Home = () => {
         <TouchableOpacity
           onPress={() => {}}
         >
-          <AntDesign name="arrowright" size={24} color="white" />
+          <AntDesign name="arrowright" size={24} color="white"/>
         </TouchableOpacity>
 
         <TouchableOpacity
