@@ -4,10 +4,24 @@ import {PropsWithChildren} from 'react'
 import { useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Profile = () => {
+const Profile = ({navigation, route}) => {
+  const { user } = route.params;
+  const handleOnLogOut = async () => {
+    await AsyncStorage.removeItem('appUser')
+    navigation.navigate('Drawer', {user: ''});
+    alert('Log out')
+  }
+
+  
+
   return (
     <View>
-      <Text>Hello world</Text>
+      <Text>Hello {user}</Text>
+      <TouchableOpacity
+      onPress={handleOnLogOut}
+      >
+        <Text>Log Out</Text>
+      </TouchableOpacity>
     </View>
   )
 }
