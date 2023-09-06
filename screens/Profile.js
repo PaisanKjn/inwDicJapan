@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   },
   circle: {
     textAlign: "center",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    borderRadius: 100
   }
 })
