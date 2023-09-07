@@ -10,7 +10,7 @@ import { PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Register = () => {
+const Register = ({route, navigation}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -29,27 +29,12 @@ const Register = () => {
   /*store current user*/
   const storeAppUser = async () => {
     try {
-      await AsyncStorage.setItem("appUser");
+      await AsyncStorage.setItem("appUser", JSON.stringify(user));
       // alert("SAVED");
     } catch (e) {
       // saving error
       alert("ERROR SAVING");
     }
-  };
-
-  /*get current user*/
-  const getAppUser = async () => {
-    try {
-      const value = await AsyncStorage.getItem("appUser");
-      if (value !== null) {
-        alert(value);
-      }
-    } catch (e) {
-      // error reading value
-      alert("ERROR RETREIVING");
-    }
-
-    console.log("Done.");
   };
 
   /* register/store users in the DB */
@@ -66,6 +51,7 @@ const Register = () => {
           await AsyncStorage.setItem("users", JSON.stringify(updatedUsers));
           storeAppUser();
           alert("User is saved! :3");
+          route.params.setUser(user);
           navigation.navigate("Home");
         }
       } else {

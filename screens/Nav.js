@@ -14,25 +14,24 @@ const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const Nav = () => {
-  const [user, setUser] = useState('');
-  const [endRoute, setEndRoute] = useState("Login");
+  const [user, setUser] = useState();
 
   useEffect(() => {
     getAppUser();
-    console.log('Current user is ')
-    console.log(user)
-  }, [user, endRoute]);
+    console.log("Current user! ");
+    console.log(user);
+    console.log("CURRENT LOG IS");
+  }, []);
 
-   /*get current user*/
+  /*get current user*/
   const getAppUser = async () => {
     try {
       const value = await AsyncStorage.getItem("appUser");
       if (value !== null) {
-        alert(user);
-        setUser(user);
-        setEndRoute("Profile");
-      } else {
-        setEndRoute("Login");
+        _value = JSON.parse(value);
+        setUser(_value);
+        console.log("GETTING DA USER");
+        console.log(_value);
       }
     } catch (e) {
       // error reading value
@@ -43,15 +42,7 @@ const Nav = () => {
   };
 
   /* Drawer */
-  function AppDrawer({ navigation, route }) {
-    console.log('The current param is ' + route.params);
-    try {
-      const {user} = route.params;
-      setUser(user);
-    } catch(e) {
-
-    }
-    console.log('The current user is ' + user);
+  function AppDrawer({ navigation }) {
     return (
       <Drawer.Navigator
         initialRouteName="Home"
@@ -61,17 +52,24 @@ const Nav = () => {
           },
           headerTitleStyle: {
             fontWeight: "bold",
-            color: '#fff'
+            color: "#fff",
           },
           headerTitle: "InwDicJapan",
           drawerStyle: {
-            backgroundColor: '#3C687A'
+            backgroundColor: "#3C687A",
           },
-          drawerActiveBackgroundColor: '#fff',
-          drawerActiveTintColor: '#3C687A',
-          drawerInactiveTintColor: '#fff',
+          drawerActiveBackgroundColor: "#fff",
+          drawerActiveTintColor: "#3C687A",
+          drawerInactiveTintColor: "#fff",
           headerRight: () => (
-            <Pressable onPress={() => navigation.navigate(endRoute, user?{user: user}:'')}>
+            <Pressable
+              onPress={() =>
+                navigation.navigate(
+                  user ? "Profile" : "Login",
+                  user ? { user: user } : ""
+                )
+              }
+            >
               <Image
                 source={{
                   uri: "https://reactnative.dev/img/tiny_logo.png",
@@ -91,28 +89,40 @@ const Nav = () => {
   // Register and Login (Bigger than the Drawer -> Drawer is nested inside)
   function UserStack() {
     return (
-      <Stack.Navigator 
-      initialRouteName="Drawer"
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#0e0e0e'
-        },
-        headerTitleStyle: {
-          color:'#fff'
-        },
-        statusBarStyle: 'light',
-        statusBarColor: '#0e0e0e',
-        animation: 'slide_from_right'
-      }
-      }>
+      <Stack.Navigator
+        initialRouteName="Drawer"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#0e0e0e",
+          },
+          headerTitleStyle: {
+            color: "#fff",
+          },
+          statusBarStyle: "light",
+          statusBarColor: "#0e0e0e",
+          animation: "slide_from_right",
+        }}
+      >
         <Stack.Screen
           name="Drawer"
           component={AppDrawer}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          initialParams={{ setUser: setUser }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          initialParams={{ setUser: setUser }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          initialParams={{ setUser: setUser }}
+        />
       </Stack.Navigator>
     );
   }

@@ -10,7 +10,7 @@ import { PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, route }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
@@ -18,13 +18,14 @@ const Login = ({ navigation }) => {
   /* For now logging*/
   useEffect(() => {
     findUsers();
+    console.log('Render')
   }, []);
 
   /*store current user*/
   const storeAppUser = async (user) => {
     try {
-      await AsyncStorage.setItem("appUser", username);
-      // alert("SAVED");
+      await AsyncStorage.setItem("appUser", JSON.stringify(user));
+      alert("SAVED");
     } catch (e) {
       // saving error
       alert("ERROR SAVING");
@@ -55,9 +56,14 @@ const Login = ({ navigation }) => {
     if(password !== userResult[0].password) {
       alert("Password doesn't match");
     } else {
-      await storeAppUser(username);
+      await storeAppUser(userResult[0]);
+      console.log('Saved user is ')
+      console.log(userResult[0])
       alert("Logged in!");
-      navigation.navigate("Drawer", {user: username});
+      //route.params.setLog(true);
+      navigation.navigate("Drawer");
+      route.params.setUser(userResult[0])
+      
     }
   }
 
