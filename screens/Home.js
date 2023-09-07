@@ -62,7 +62,7 @@ const Home = () => {
         >
           <Text className="text-xl" >Thai</Text>
         </TouchableOpacity>
-      </View>
+      </View >
     </View>
   );
 };
