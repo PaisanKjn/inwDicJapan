@@ -19,45 +19,49 @@ const Home = () => {
     <View style={{ flex: 1 }}>
       <View
         style={{
-          backgroundColor: "#0e0e0e",      
+          backgroundColor: "#0e0e0e",
           padding: 30,
           paddingVertical: 50,
           flex: 8,
-          
         }}
       >
-        <View style = {{flexDirection: "row", justifyContent: "space-between", alignItems: 'center'}}>
-        <TextInput
+        <View
           style={{
-            fontSize: 25,
-            color: "#ffffff",
-            //backgroundColor: "#e3f",
-            height: 100,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
-          value={searchQuery}
-          onChangeText={(value) => setSearchQuery(value)}
-          placeholder="Enter Text"
-          placeholderTextColor={"#999999"}
-          cursorColor={"#3C687A"}
-          
-        />
-        <TouchableOpacity
-          className="rounded-xl"
-          style={{
-            backgroundColor: "#3C687A",
-            height: 50,
-            weight: 50,
-            paddingHorizontal: 30,
-            justifyContent: 'center'
-          }}
-          onPress={() => {}}
         >
-          <Ionicons name="search" size={24} color="white" />
-        </TouchableOpacity>
+          <TextInput
+            style={{
+              fontSize: 25,
+              color: "#ffffff",
+              //backgroundColor: "#e3f",
+              height: 100,
+            }}
+            value={searchQuery}
+            onChangeText={(value) => setSearchQuery(value)}
+            placeholder="Enter Text"
+            placeholderTextColor={"#999999"}
+            cursorColor={"#3C687A"}
+          />
+          <TouchableOpacity
+            className="rounded-xl"
+            style={{
+              backgroundColor: "#3C687A",
+              height: 50,
+              weight: 50,
+              paddingHorizontal: 30,
+              justifyContent: "center",
+            }}
+            onPress={() => {}}
+          >
+            <Ionicons name="search" size={24} color="white" />
+          </TouchableOpacity>
         </View>
-        
       </View>
 
+     
       <View
         style={{
           justifyContent: "space-around",
@@ -79,7 +83,7 @@ const Home = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[{ flex: 1, justifyContent: "center", alignItems: 'center' }]}
+          style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}
           onPress={() => setIsJPTH(!isJPTH)}
         >
           <AntDesign name="arrowright" size={24} color="white" />
@@ -93,12 +97,13 @@ const Home = () => {
         >
           <Text
             className="text-xl"
-            style={{ textAlign: "center", verticalAlign: "center" }}
+            style={{ textAlign: "center", verticalAlign: "middle" }}
           >
             {!isJPTH ? "Japanese" : "Thai"}
           </Text>
         </TouchableOpacity>
       </View>
+  
     </View>
   );
 };

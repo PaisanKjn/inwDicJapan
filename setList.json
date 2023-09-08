@@ -1,0 +1,88 @@
+[
+  {
+    "username": "Nick",
+    "listName": "mySet",
+    "vocab": [
+      {
+        "vocab": "食べる",
+        "hiragana": "たべる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "กิน",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "寝る",
+        "hiragana": "ねる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "นอน",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "分かる",
+        "hiragana": "分かる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "เข้าใจ",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "起きる",
+        "hiragana": "おきる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "ตื่น",
+        "jlpt": "N5"
+      }
+    ]
+  },
+  {
+    "username": "Nick",
+    "listName": "Can't remember",
+    "vocab": [
+      {
+        "vocab": "食べる",
+        "hiragana": "たべる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "กิน",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "寝る",
+        "hiragana": "ねる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "นอน",
+        "jlpt": "N5"
+      }
+    ]
+  },
+  {
+    "username": "John",
+    "listName": "JPN-101 Words",
+    "vocab": [
+      {
+        "vocab": "遠い",
+        "hiragana": "とおい",
+        "type": "คำคุณศัพท์ (Adj i)",
+        "meaning": "กิน",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "会社員",
+        "hiragana": "かいしゃいん",
+        "type": "คำนาม (Noun)",
+        "meaning": "พนักงานบริษัท",
+        "jlpt": "N5"
+      },
+      {
+        "vocab": "寝る",
+        "hiragana": "ねる",
+        "type": "คำกริยา (Verb)",
+        "meaning": "นอน",
+        "jlpt": "N5"
+      }
+    ]
+  },
+  {
+    "username": "Lily",
+    "listName": "My word list :D",
+    "vocab": []
+  }
+]

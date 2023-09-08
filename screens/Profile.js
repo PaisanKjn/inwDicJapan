@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -31,17 +24,21 @@ const Profile = ({ navigation, route }) => {
             source={{
               uri: "https://reactnative.dev/img/tiny_logo.png",
             }}
-            style={{ width: 80, height: 80, margin: 10, resizeMode: "center" }}
+            style={{ width: 80, height: 80, margin: 10, resizeMode: "cover" }}
           />
         </TouchableOpacity>
         <Text style={styles.head}>{user.username}</Text>
       </View>
-      <View>
+      <View
+        style={{
+          margin: 30,
+          marginTop: 100,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}
+      >
         <TouchableOpacity onPress={handleOnLogOut}>
-          <Text
-            style={[styles.button, { marginLeft: 240, marginTop: 100 }]}
-            className="text-xl"
-          >
+          <Text style={[styles.button]} className="text-xl">
             Logout
           </Text>
         </TouchableOpacity>

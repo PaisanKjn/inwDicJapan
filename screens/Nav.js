@@ -3,12 +3,14 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Home";
 import VocabList from "./VocabList";
-import { Pressable, Text, Image } from "react-native";
+import { Pressable, Text, Image, View } from "react-native";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
+import Wordlist from "./Wordlist";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from "@expo/vector-icons";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -45,6 +47,7 @@ const Nav = () => {
   function AppDrawer({ navigation }) {
     return (
       <Drawer.Navigator
+      
         initialRouteName="Home"
         screenOptions={{
           headerStyle: {
@@ -80,8 +83,20 @@ const Nav = () => {
           ),
         }}
       >
-        <Drawer.Screen name="Home" component={Home} />
-        <Drawer.Screen name="VocabList" component={VocabList} />
+        <Drawer.Screen
+          name="Home"
+          component={Home}
+          options={{
+            drawerIcon: ({ focused, size }) => {
+              <AntDesign
+                name="home"
+                size={24}
+                color={focused ? "#fff" : "#3C687A"}
+              />;
+            },
+          }}
+        />
+        <Drawer.Screen name="VocabList" component={VocabList} initialParams={{user:user}}/>
       </Drawer.Navigator>
     );
   }
@@ -122,6 +137,10 @@ const Nav = () => {
           name="Login"
           component={Login}
           initialParams={{ setUser: setUser }}
+        />
+        <Stack.Screen
+        name = "WordList"
+        component={Wordlist}
         />
       </Stack.Navigator>
     );
