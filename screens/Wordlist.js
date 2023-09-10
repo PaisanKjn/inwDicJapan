@@ -7,43 +7,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
-import { ImageBackground } from "react-native-web";
-
-const word = [
-  {
-    vocab: "食べる",
-    hiragana: "たべある",
-    type: "คำกริยา (Verb)",
-    meaning: "กิน",
-    jlpt: "N5",
-  },
-  {
-    vocab: "寝る",
-    hiragana: "ねる",
-    type: "คำกริยา (Verb)",
-    meaning: "นอน",
-    jlpt: "N5",
-  },
-  {
-    vocab: "分かる",
-    hiragana: "分かる",
-    type: "คำกริยา (Verb)",
-    meaning: "เข้าใจ",
-    jlpt: "N5",
-  },
-  {
-    vocab: "起きる",
-    hiragana: "おきる",
-    type: "คำกริยา (Verb)",
-    meaning: "ตื่น",
-    jlpt: "N5",
-  },
-];
+import { Ionicons } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 
 const Wordlist = ({ route }) => {
-  const [listItems, setListItems] = useState(word);
   const [repeat, setRepeat] = useState(1);
   const { vocabList } = route.params;
+  const [sound, setSound] = useState();
 
   const ItemView = ({ item }) => {
     return (
@@ -72,11 +42,61 @@ const Wordlist = ({ route }) => {
   };
 
   const handleOnPress = () => {
-    if(repeat === 3) {
+    if (repeat === 3) {
       setRepeat(1);
     } else {
-      setRepeat(repeat+1)
+      setRepeat(repeat + 1);
     }
+  };
+
+  const handleOnSpeak = () => {
+    if (vocabList.vocab.length > 0) {
+      handleSpeak();
+    } else {
+      alert("You don't have any vocab in your list yet!");
+    }
+  };
+
+  const handleSpeak =  async() => {
+    for (let j = 1; j <= repeat; j++) {
+      for (let i = 0; i < vocabList.vocab.length; i++) {
+        let word = vocabList.vocab[i].vocab;
+        let voiceURLJP =
+          "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=ja-jp&c=MP3&v=Fumi&src=" +
+          word;
+        await playSound(voiceURLJP); // Send an API url for GET request
+        await sleep(500);
+
+        word = vocabList.vocab[i].meaning;
+        let voiceURLTH =
+          "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=th-th&c=MP3&src=" +
+          word;
+        await playSound(voiceURLTH);
+        await sleep(700);
+      }
+      await sleep(500);
+    }
+  }
+
+   // Play the sound with an onEnd callback
+   playSound = async (voiceURL) => {
+    try {
+      console.log("Loading Sound");
+      const { sound } = await Audio.Sound.createAsync({
+        uri: voiceURL,
+      });
+      setSound(sound);
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+    } catch (e) {
+      console.log("Failed for some fucking reason");
+      console.log(e);
+    }
+  };
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   return (
@@ -107,15 +127,37 @@ const Wordlist = ({ route }) => {
           position: "absolute",
           backgroundColor: "#3C687A",
           borderRadius: 20,
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: "center",
+          justifyContent: "center",
           margin: 20,
           bottom: 0,
-          right: 0
+          right: 75,
         }}
-        onPress={() => {handleOnPress()}}
+        onPress={() => {
+          handleOnPress();
+        }}
       >
-        <Text style = {styles.textButton}>x{repeat}</Text>
+        <Text style={styles.textButton}>x{repeat}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{
+          height: 55,
+          width: 55,
+          position: "absolute",
+          backgroundColor: "#3C687A",
+          borderRadius: 20,
+          alignItems: "center",
+          justifyContent: "center",
+          margin: 20,
+          bottom: 0,
+          right: 0,
+        }}
+        onPress={() => {
+          handleOnSpeak();
+        }}
+      >
+        <Ionicons name="volume-medium" size={35} color="white" />
       </TouchableOpacity>
     </View>
   );
