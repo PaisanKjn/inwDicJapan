@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./Home";
 import VocabList from "./VocabList";
 import { Pressable, Text, Image, View } from "react-native";
@@ -11,8 +12,11 @@ import Wordlist from "./Wordlist";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
+import CreateVocabList from "./createVocabList";
+import Redirect from "./Redirect";
 
 const Stack = createNativeStackNavigator();
+const _Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const Nav = () => {
@@ -22,7 +26,6 @@ const Nav = () => {
     getAppUser();
     console.log("Current user! ");
     console.log(user);
-    console.log("CURRENT LOG IS");
   }, []);
 
   /*get current user*/
@@ -47,7 +50,6 @@ const Nav = () => {
   function AppDrawer({ navigation }) {
     return (
       <Drawer.Navigator
-      
         initialRouteName="Home"
         screenOptions={{
           headerStyle: {
@@ -87,16 +89,17 @@ const Nav = () => {
           name="Home"
           component={Home}
           options={{
-            drawerIcon: ({ focused, size }) => {
+            drawerIcon: ({ focused}) => {
               <AntDesign
                 name="home"
                 size={24}
                 color={focused ? "#fff" : "#3C687A"}
               />;
             },
+            //drawerType: 'slide'
           }}
         />
-        <Drawer.Screen name="VocabList" component={VocabList} initialParams={{user:user}}/>
+        <Drawer.Screen name="vocabStack" component={user?VocabStack:Redirect} />
       </Drawer.Navigator>
     );
   }
@@ -138,14 +141,32 @@ const Nav = () => {
           component={Login}
           initialParams={{ setUser: setUser }}
         />
-        <Stack.Screen
-        name = "WordList"
-        component={Wordlist}
-        />
+        <Stack.Screen name="WordList" component={Wordlist} />
       </Stack.Navigator>
     );
   }
 
+  function VocabStack() {
+    return (
+      <_Stack.Navigator>
+        <_Stack.Screen
+          name="VocabList"
+          component={VocabList}
+          initialParams={{ user: user }}
+          options={{headerShown: false}}
+        />
+
+        <_Stack.Screen
+          name="createList"
+          component={CreateVocabList}
+          options={{
+            presentation: "transparentModal",
+            headerShown: false,
+          }}
+        />
+      </_Stack.Navigator>
+    );
+  }
   return (
     <NavigationContainer>
       <UserStack />
