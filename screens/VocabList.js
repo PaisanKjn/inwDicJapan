@@ -86,7 +86,7 @@ const VocabList = ({ navigation, route }) => {
     <View style={{ backgroundColor: "#3C687A", flex: 1, padding: 30 }}>
       <Text style={styles.head}>Vocab List</Text>
       <View>
-        <FlatList data={vocabLists} renderItem={setView} />
+        <FlatList data={setList} renderItem={setView} />
       </View>
 
       <View style={{ flexDirection: "row" }}>

@@ -14,6 +14,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
 import CreateVocabList from "./createVocabList";
 import Redirect from "./Redirect";
+import SelectDifficulty from "./SelectDifficulty";
+import Timer from "./Timer";
+import Quiz from './Quiz'
+import Score from "./Score";
+import Result from "./Result";
 
 const Stack = createNativeStackNavigator();
 const _Stack = createStackNavigator();
@@ -63,9 +68,11 @@ const Nav = () => {
           drawerStyle: {
             backgroundColor: "#3C687A",
           },
+          headerTintColor: '#fff',
           drawerActiveBackgroundColor: "#fff",
           drawerActiveTintColor: "#3C687A",
           drawerInactiveTintColor: "#fff",
+          unmountOnBlur: true,
           headerRight: () => (
             <Pressable
               onPress={() =>
@@ -86,20 +93,13 @@ const Nav = () => {
         }}
       >
         <Drawer.Screen
-          name="Home"
-          component={Home}
-          options={{
-            drawerIcon: ({ focused}) => {
-              <AntDesign
-                name="home"
-                size={24}
-                color={focused ? "#fff" : "#3C687A"}
-              />;
-            },
-            //drawerType: 'slide'
+          name="Search"
+          component={SearchStack}
+          options={{ title: 'Home'
           }}
         />
-        <Drawer.Screen name="vocabStack" component={user?VocabStack:Redirect} />
+        <Drawer.Screen name="vocabStack" component={user?VocabStack:Redirect} options={{title: 'Vocab List'}} />
+        <Drawer.Screen name="quizStack" component={QuizStack} options = {{title: 'Quiz'}}/>
       </Drawer.Navigator>
     );
   }
@@ -146,6 +146,38 @@ const Nav = () => {
     );
   }
 
+  function SearchStack() {
+    return(<_Stack.Navigator>
+      <_Stack.Screen
+      name = "Home"
+      component = {Home}
+      options = {{headerShown: false}}
+      />
+      <_Stack.Screen
+      name = "Result"
+      component = {Result}
+      initialParams={{ user: user }}
+      options = {{headerShown: false}}
+      />
+       <_Stack.Screen
+          name="VocabList"
+          component={VocabList}
+          initialParams={{ user: user }}
+          options={{headerShown: false}}
+        />
+
+        <_Stack.Screen
+          name="createList"
+          component={CreateVocabList}
+          options={{
+            presentation: "transparentModal",
+            headerShown: false,
+          }}
+        />
+    </_Stack.Navigator>)
+    
+  }
+
   function VocabStack() {
     return (
       <_Stack.Navigator>
@@ -162,6 +194,42 @@ const Nav = () => {
           options={{
             presentation: "transparentModal",
             headerShown: false,
+          }}
+        />
+      </_Stack.Navigator>
+    );
+  }
+
+  function QuizStack() {
+    return (
+      <_Stack.Navigator
+      initialRouteName="selectDifficulty"
+      >
+        <_Stack.Screen
+          name="selectDifficulty"
+          component={SelectDifficulty}
+          options={{headerShown: false}}
+        />
+
+        <_Stack.Screen
+          name="timer"
+          component={Timer}
+          options={{
+            headerShown: false
+          }}
+        />
+          <_Stack.Screen
+          name="quiz"
+          component={Quiz}
+          options={{
+            headerShown: false
+          }}
+        />
+        <_Stack.Screen
+          name="score"
+          component={Score}
+          options={{
+            headerShown: false
           }}
         />
       </_Stack.Navigator>

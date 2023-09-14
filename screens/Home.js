@@ -4,19 +4,26 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  DimensionValue,
 } from "react-native";
 import React from "react";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+const Home = ({navigation}) => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [isJPTH, setIsJPTH] = useState(true);
 
+  const handleOnSearch = () => {
+    if(searchQuery.trim() != '') {
+      navigation.navigate('Result', {searchQuery: searchQuery.trim()});
+    }
+
+  } 
+
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
           backgroundColor: "#0e0e0e",
@@ -36,7 +43,6 @@ const Home = () => {
             style={{
               fontSize: 25,
               color: "#ffffff",
-              //backgroundColor: "#e3f",
               height: 100,
             }}
             value={searchQuery}
@@ -54,7 +60,7 @@ const Home = () => {
               paddingHorizontal: 30,
               justifyContent: "center",
             }}
-            onPress={() => {}}
+            onPress={() => handleOnSearch()}
           >
             <Ionicons name="search" size={24} color="white" />
           </TouchableOpacity>
@@ -104,7 +110,7 @@ const Home = () => {
         </TouchableOpacity>
       </View>
   
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
     height: 35,
   },
   button: {
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#EEEEEE",
     padding: 15,
     borderRadius: 20,
   },

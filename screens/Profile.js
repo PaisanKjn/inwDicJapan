@@ -2,10 +2,71 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker'
+
+const imgDir = FileSystem.documentDirectory + 'images/';
+
+const ensureDirExists = async () => {
+  const dirInfo = await FileSystem.getInfoAsync(imgDir);
+  if(!dirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(imgDir, {intermediates: true});
+  }
+}; 
 
 const Profile = ({ navigation, route }) => {
   const { user } = route.params;
-  //const _user = JSON.stringify(user)
+  const [img, setImg] = useState("https://reactnative.dev/img/tiny_logo.png");
+
+  useEffect(()=> {
+    loadImages();
+  }, [])
+
+  const loadImages = async ()  => {
+    await ensureDirExists();
+    const files = await FileSystem.readDirectoryAsync(imgDir);
+    if(files.length>0) {
+      setImg(files.map(f=>imgDir+f))
+    }
+  }
+
+  const selectImage = async (useLibrary) => {
+    let result;
+
+    const options = ImagePicker.MediaTypeOptions = {
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1,1],
+    }
+
+    if(useLibrary) {
+      result = await ImagePicker.launchImageLibraryAsync(options)
+    } else {
+      await ImagePicker.requestCameraPermissionsAsync();
+      result = await ImagePicker.launchImageLibraryAsync(options); 
+    }
+    
+    if(!result.canceled) {
+      console.log(result.assets[0].uri);
+      saveImage(result.assets[0].uri)
+    }
+  };
+
+  const saveImage = async(uri) => {
+    await ensureDirExists();
+    const filename = new Date().getTime() +'.jpg';
+    const dest = imgDir +filename;
+    await FileSystem.copyAsync({from: uri, to:dest});
+    setImg(dest);
+    saveToDB();
+  }
+
+  const saveToDB = async() => {
+    // sth sth database
+
+  }
+
+
   const handleOnLogOut = async () => {
     await AsyncStorage.removeItem("appUser");
     alert("Log out");
@@ -15,16 +76,16 @@ const Profile = ({ navigation, route }) => {
 
   return (
     <View style={[{ backgroundColor: "#0e0e0e", flex: 1 }]}>
-      <View style={[{ flexDirection: "row" }]}>
+      <View style={[{ flexDirection: "row"}]}>
         <TouchableOpacity
           style={[styles.circle, { marginTop: 50, marginLeft: 40 }]}
-          className="text-xl"
+          onPress={() => selectImage(true)}
         >
           <Image
             source={{
-              uri: "https://reactnative.dev/img/tiny_logo.png",
+              uri: img
             }}
-            style={{ width: 80, height: 80, margin: 10, resizeMode: "cover" }}
+            style={[styles.circle,{ width: 90, height: 90, margin: 5, resizeMode: "cover" }]}
           />
         </TouchableOpacity>
         <Text style={styles.head}>{user.username}</Text>
@@ -37,9 +98,9 @@ const Profile = ({ navigation, route }) => {
           justifyContent: "flex-end",
         }}
       >
-        <TouchableOpacity onPress={handleOnLogOut}>
-          <Text style={[styles.button]} className="text-xl">
-            Logout
+        <TouchableOpacity style={[styles.button]} onPress={handleOnLogOut}>
+          <Text style = {{fontSize: 20, color: 'white'}}>
+            Log out
           </Text>
         </TouchableOpacity>
       </View>
@@ -62,13 +123,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     fontWeight: "500",
-    backgroundColor: "white",
+    backgroundColor: "#3C687A",
     width: 100,
     height: 35,
-    borderRadius: 100,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   circle: {
-    textAlign: "center",
     backgroundColor: "white",
     borderRadius: 100,
   },

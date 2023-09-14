@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 
-const Timer = () => {
-  const [time, setTime] = useState(3); // 25 minutes in seconds
+const Timer = ({navigation}) => {
+  const [time, setTime] = useState(3);
 
   useEffect(() => {
     let interval = null;
 
-    if (time > 0) {
+    if (time > -1) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
+    } else {
+      navigation.replace('quiz')
     }
 
     return () => {

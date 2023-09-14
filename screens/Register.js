@@ -84,9 +84,9 @@ const Register = ({route, navigation}) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: "black" }]}>
+    <View style={[styles.container, { backgroundColor: "#0e0e0e", flex: 1}]}>
       <Text style={styles.head}>Register</Text>
-      <View style={{ alignItems: "center", marginTop: 20, marginBottom: 10 }}>
+      <View style={{ alignItems: "center", marginTop: 30, marginBottom: 20 }}>
         <TextInput
           style={styles.input}
           value={username}
@@ -110,15 +110,16 @@ const Register = ({route, navigation}) => {
       </View>
       <View
         style={[
-          { flexDirection: "row-reverse", marginLeft: 200, marginBottom: 1000 },
+          { flexDirection: "row-reverse" },
         ]}
       >
         <TouchableOpacity
+         style ={styles.button}
           onPress={() => {
             handleSubmit();
           }}
         >
-          <Text style={styles.button} className="text-xl">
+          <Text style = {{color: 'white', fontSize: 20}}>
             Submit
           </Text>
         </TouchableOpacity>
@@ -129,26 +130,29 @@ const Register = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
+    paddingHorizontal: 40,
   },
   input: {
-    marginBottom: 10,
+    marginBottom: 15,
     textAlign: "center",
-    fontSize: 22,
     fontWeight: "100",
     backgroundColor: "white",
-    width: 300,
-    height: 30,
-    borderRadius: 100,
+    width: "100%",
+    height: 40,
+    borderRadius: 15,
+    fontSize: 22
   },
   button: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "500",
-    backgroundColor: "white",
+    backgroundColor: "#3C687A",
     width: 100,
     height: 35,
-    borderRadius: 100,
+    borderRadius: 15,
+    color: 'white',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   head: {
     textAlign: "center",

@@ -62,7 +62,7 @@ const Wordlist = ({ route }) => {
       for (let i = 0; i < vocabList.vocab.length; i++) {
         let word = vocabList.vocab[i].vocab;
         let voiceURLJP =
-          "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=ja-jp&c=MP3&v=Fumi&src=" +
+          "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=ja-jp&c=MP3&v=Akira&src=" +
           word;
         await playSound(voiceURLJP); // Send an API url for GET request
         await sleep(500);
@@ -79,7 +79,7 @@ const Wordlist = ({ route }) => {
   }
 
    // Play the sound with an onEnd callback
-   playSound = async (voiceURL) => {
+   const playSound = async (voiceURL) => {
     try {
       console.log("Loading Sound");
       const { sound } = await Audio.Sound.createAsync({
