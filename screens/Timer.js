@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { globalStyle } from "../styles/Global";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { COLORS } from "../styles/COLORS";
 
 const Timer = ({navigation}) => {
   const [time, setTime] = useState(3);
@@ -28,23 +31,17 @@ const Timer = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[globalStyle.container, {justifyContent: 'center', alignItems: 'center'}]}>
       <Text style={styles.timer}>{formatTime(time)}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: 'black'
-  },
   timer: {
     fontSize: 72,
     fontWeight: "bold",
-    color: "white",
+    color: COLORS.dicWhite
   },
 });
 

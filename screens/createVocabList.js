@@ -11,6 +11,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { useCardAnimation } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { COLORS } from "../styles/COLORS";
+import { globalStyle } from "../styles/Global";
 
 const CreateVocabList = ({ navigation, route }) => {
   const { current } = useCardAnimation();
@@ -74,11 +76,7 @@ const CreateVocabList = ({ navigation, route }) => {
 
   return (
     <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      style={styles.modalContainer}
     >
       <Animated.View
         style={[
@@ -106,27 +104,14 @@ const CreateVocabList = ({ navigation, route }) => {
             onChangeText={(value) => setListName(value)}
           />
           <TouchableOpacity
-            style={{
-              marginBottom: 20,
-              padding: 5,
-              borderRadius: 12,
-              backgroundColor: "#3C687A",
-              alignItems: "center",
-            }}
+            style={[globalStyle.buttonMain, styles.button, {marginBottom: 20}]}
             mode="contained"
             onPress={() => handleOnSubmit()}
           >
-            <Text style={{ color: "white" }}>Create</Text>
+            <Text style={{ color: COLORS.dicWhite }}>Create</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{
-              marginBottom: 20,
-              padding: 5,
-              borderRadius: 12,
-              borderColor: "#3C687A",
-              borderWidth: 2,
-              alignItems: "center",
-            }}
+            style={[globalStyle.buttonSub, styles.button]}
             mode="contained"
             onPress={navigation.goBack}
           >
@@ -139,20 +124,29 @@ const CreateVocabList = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   viewAnimated: {
     width: "100%",
   },
   viewContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: COLORS.dicWhite,
     borderRadius: 20,
   },
   text: {
     fontSize: 25,
     textAlignVertical: "center",
-    color: "#0e0e0e",
+    color: COLORS.dicBlack1,
     marginVertical: 30,
   },
+  button: {
+    alignSelf: 'center',
+    width: '100%'
+  }
 });
 export default CreateVocabList;

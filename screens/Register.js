@@ -8,8 +8,9 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { globalStyle } from "../styles/Global";
 
-const Register = ({route, navigation}) => {
+const Register = ({ route, navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -84,44 +85,41 @@ const Register = ({route, navigation}) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: "#0e0e0e", flex: 1}]}>
-      <Text style={styles.head}>Register</Text>
-      <View style={{ alignItems: "center", marginTop: 30, marginBottom: 20 }}>
+    <View style={globalStyle.container}>
+      <Text style={globalStyle.h1}>Register</Text>
+      {/* Input container */}
+      <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={globalStyle.input}
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
         />
         <TextInput
-          style={styles.input}
+          style={globalStyle.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
           secureTextEntry={true}
         />
         <TextInput
-          style={styles.input}
+          style={globalStyle.input}
           value={passwordCheck}
           onChangeText={(value) => setPasswordCheck(value)}
           placeholder="Confirm password"
           secureTextEntry={true}
         />
       </View>
-      <View
-        style={[
-          { flexDirection: "row-reverse" },
-        ]}
-      >
+
+      {/* Button Container */}
+      <View style={{ flexDirection: "row-reverse" }}>
         <TouchableOpacity
-         style ={styles.button}
+          style={globalStyle.buttonMain}
           onPress={() => {
             handleSubmit();
           }}
         >
-          <Text style = {{color: 'white', fontSize: 20}}>
-            Submit
-          </Text>
+          <Text style={globalStyle.textButton}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -129,37 +127,10 @@ const Register = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 40,
-  },
-  input: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontWeight: "100",
-    backgroundColor: "white",
-    width: "100%",
-    height: 40,
-    borderRadius: 15,
-    fontSize: 22
-  },
-  button: {
-    textAlign: "center",
-    fontSize: 22,
-    fontWeight: "500",
-    backgroundColor: "#3C687A",
-    width: 100,
-    height: 35,
-    borderRadius: 15,
-    color: 'white',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  head: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 36,
-    fontWeight: "bold",
-    marginTop: 20,
+  inputContainer: {
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 20,
   },
 });
 

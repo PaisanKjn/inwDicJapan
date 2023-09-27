@@ -9,6 +9,8 @@ import {
 import { PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { globalStyle } from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
 
 const Login = ({ navigation, route }) => {
   const [username, setUsername] = useState("");
@@ -18,7 +20,7 @@ const Login = ({ navigation, route }) => {
   /* For now logging*/
   useEffect(() => {
     findUsers();
-    console.log('Render')
+    console.log("Render");
   }, []);
 
   /*store current user*/
@@ -49,24 +51,24 @@ const Login = ({ navigation, route }) => {
       }
     });
     console.log(userResult);
-    return userResult.length > 0 ? checkPass(userResult) : alert("This username doesn't exist!");
+    return userResult.length > 0
+      ? checkPass(userResult)
+      : alert("This username doesn't exist!");
   };
 
   const checkPass = async (userResult) => {
-    if(password !== userResult[0].password) {
+    if (password !== userResult[0].password) {
       alert("Password doesn't match");
     } else {
       await storeAppUser(userResult[0]);
-      console.log('Saved user is ')
-      console.log(userResult[0])
+      console.log("Saved user is ");
+      console.log(userResult[0]);
       alert("Logged in!");
       //route.params.setLog(true);
       navigation.navigate("Drawer");
-      route.params.setUser(userResult[0])
-      
+      route.params.setUser(userResult[0]);
     }
-  }
-
+  };
 
   /* retrieving all users from DB so the users are in the const */
   const findUsers = async () => {
@@ -81,83 +83,54 @@ const Login = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: "#0e0e0e", flex: 1 }]}>
-      <Text style={styles.head}>Login</Text>
-      <View style={{ alignItems: "center", marginTop: 30, marginBottom: 20}}>
+    <View style={globalStyle.container}>
+      <Text style={globalStyle.h1}>Login</Text>
+
+      {/* Input Container */}
+      <View style={styles.inputContainer}>
         <TextInput
-          style={styles.input}
+          style={globalStyle.input}
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
         />
         <TextInput
-          style={styles.input}
+          style={globalStyle.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
           secureTextEntry={true}
         />
       </View>
-      <View style={[{ flexDirection: "row-reverse" }]}>
+
+      {/* Button container */}
+      <View style={{ flexDirection: "row-reverse" }}>
         <TouchableOpacity
-         style={[styles.button,{ backgroundColor: '#3C687A', marginLeft: 10}]}
+          style={[globalStyle.buttonMain, { marginLeft: 10 }]}
           onPress={() => {
             handleSubmit();
           }}
         >
-          <Text style = {{color: 'white', fontSize: 20}}>
-            Login
-          </Text>
+          <Text style={globalStyle.textButton}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-                style={[styles.button, {backgroundColor: null, borderColor: '#3C687A', borderWidth: 1}]}
+          style={globalStyle.buttonSub}
           onPress={() => {
             navigation.navigate("Register");
           }}
         >
-          <Text style = {{color: 'white', fontSize: 20}}>
-            Register
-          </Text>
+          <Text style={globalStyle.textButton}>Register</Text>
         </TouchableOpacity>
       </View>
-      </View>
-      
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 40,
-  },
-  input: {
-    marginBottom: 15,
-    textAlign: "center",
-    fontWeight: "100",
-    backgroundColor: "white",
-    width: "100%",
-    height: 40,
-    borderRadius: 15,
-    fontSize: 22,
-
-  },
-  button: {
-    textAlign: "center",
-    fontSize: 22,
-    fontWeight: "500",
-    backgroundColor: "white",
-    width: 100,
-    height: 35,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  },
-  head: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 36,
-    fontWeight: "bold",
-    marginTop: 20,
+  inputContainer: {
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 20,
   },
 });
 

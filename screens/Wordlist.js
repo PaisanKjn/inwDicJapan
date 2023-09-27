@@ -5,10 +5,15 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { globalStyle } from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
 
 const Wordlist = ({ route }) => {
   const [repeat, setRepeat] = useState(1);
@@ -18,27 +23,22 @@ const Wordlist = ({ route }) => {
   const ItemView = ({ item }) => {
     return (
       //FlatList Item
-      <Text
-        style={[
-          styles.item,
-          {
-            paddingBottom: 100,
-            fontSize: 32,
-            color: "#fff",
-          },
-        ]}
-        onPress={() => getItem(item)}
+      <Pressable
+        onLongPress={() => {}}
+        style={styles.item}
+        android_ripple={{ foreground: true, color: "#888" }}
       >
-        {item.vocab}
-        {"\n"}
-        {item.meaning}
-      </Text>
+        <Text style={[styles.textList]}>
+          {item.vocab}
+          {"\n"}
+          {item.meaning}
+        </Text>
+      </Pressable>
     );
   };
 
-  const getItem = (item) => {
-    //function for click on item
-    alert("JLPT: " + item.jlpt + " Meaning: " + item.meaning);
+  const handleOnDelete = (item) => {
+    alert(item.vocab + " is deleted");
   };
 
   const handleOnPress = () => {
@@ -57,7 +57,7 @@ const Wordlist = ({ route }) => {
     }
   };
 
-  const handleSpeak =  async() => {
+  const handleSpeak = async () => {
     for (let j = 1; j <= repeat; j++) {
       for (let i = 0; i < vocabList.vocab.length; i++) {
         let word = vocabList.vocab[i].vocab;
@@ -76,10 +76,10 @@ const Wordlist = ({ route }) => {
       }
       await sleep(500);
     }
-  }
+  };
 
-   // Play the sound with an onEnd callback
-   const playSound = async (voiceURL) => {
+  // Play the sound with an onEnd callback
+  const playSound = async (voiceURL) => {
     try {
       console.log("Loading Sound");
       const { sound } = await Audio.Sound.createAsync({
@@ -100,39 +100,46 @@ const Wordlist = ({ route }) => {
   }
 
   return (
-    <View style={[{ backgroundColor: "#0e0e0e", flex: 1 }]}>
-      <Text style={[styles.head]}>{vocabList.listName}</Text>
-      <View
-        style={{
-          height: 0.5,
-          width: 240,
-          marginTop: 10,
-          marginLeft: 20,
-          backgroundColor: "#3C687A",
-        }}
-      />
+    <View style={[globalStyle.container, { paddingHorizontal: 0 }]}>
+      <Text style={[globalStyle.h1, { textAlign: "left", paddingLeft: 40 }]}>
+        {vocabList.listName}
+      </Text>
+      <View style={styles.line} />
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={[styles.container]}>
-          <FlatList
+        <View>
+          {/* <FlatList
             data={vocabList.vocab}
             renderItem={ItemView}
             keyExtractor={(item) => item.meaning.toString()}
+          /> */}
+          <SwipeListView
+            data={vocabList.vocab}
+            renderItem={(rowData, rowMap) => ItemView(rowData)}
+            renderHiddenItem={(rowData, rowMap) => (
+              <View
+                style={{
+                  backgroundColor: COLORS.dicRed,
+                  flex: 1,
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                  paddingRight: 25,
+                }}
+              >
+                <Pressable onPress={() => handleOnDelete(rowData.item)}>
+                  <FontAwesome name="trash" size={30} color={COLORS.dicWhite} />
+                </Pressable>
+              </View>
+            )}
+            disableRightSwipe={true}
+            rightOpenValue={-70}
+            rightActionValue={-50}
           />
         </View>
       </SafeAreaView>
+
+      {/* Sound buttons */}
       <TouchableOpacity
-        style={{
-          height: 55,
-          width: 55,
-          position: "absolute",
-          backgroundColor: "#3C687A",
-          borderRadius: 20,
-          alignItems: "center",
-          justifyContent: "center",
-          margin: 20,
-          bottom: 0,
-          right: 75,
-        }}
+        style={[styles.buttonSquare, { right: 75 }]}
         onPress={() => {
           handleOnPress();
         }}
@@ -141,18 +148,7 @@ const Wordlist = ({ route }) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={{
-          height: 55,
-          width: 55,
-          position: "absolute",
-          backgroundColor: "#3C687A",
-          borderRadius: 20,
-          alignItems: "center",
-          justifyContent: "center",
-          margin: 20,
-          bottom: 0,
-          right: 0,
-        }}
+        style={styles.buttonSquare}
         onPress={() => {
           handleOnSpeak();
         }}
@@ -166,26 +162,39 @@ const Wordlist = ({ route }) => {
 export default Wordlist;
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    flex: 1,
-    margin: 10,
+  line: {
+    height: 0.5,
+    width: 240,
+    marginTop: 10,
+    backgroundColor: COLORS.dicBlue,
+    marginLeft: 40,
+  },
+  textList: {
+    fontSize: 18,
+    fontSize: 32,
+    color: COLORS.dicWhite,
   },
   item: {
-    padding: 10,
-    fontSize: 18,
-    //height: 44,
-  },
-  head: {
-    color: "white",
-    fontSize: 40,
-    marginTop: 20,
-    marginLeft: 20,
-    textAlign: "left",
+    paddingVertical: 20,
+    justifyContent: "center",
+    backgroundColor: COLORS.dicBlack1,
+    paddingLeft: 40,
   },
   textButton: {
     fontSize: 25,
     textAlignVertical: "center",
-    color: "#fff",
+    color: COLORS.dicWhite,
+  },
+  buttonSquare: {
+    height: 55,
+    width: 55,
+    position: "absolute",
+    backgroundColor: COLORS.dicBlue,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 20,
+    bottom: 0,
+    right: 0,
   },
 });

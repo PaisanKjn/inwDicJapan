@@ -1,10 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerContent,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList
+} from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./Home";
 import VocabList from "./VocabList";
-import { Pressable, Text, Image, View } from "react-native";
+import { Pressable, Text, Image, View, StyleSheet,SafeAreaView } from "react-native";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
@@ -12,17 +18,23 @@ import Wordlist from "./Wordlist";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import CreateVocabList from "./createVocabList";
 import Redirect from "./Redirect";
 import SelectDifficulty from "./SelectDifficulty";
 import Timer from "./Timer";
-import Quiz from './Quiz'
+import Quiz from "./Quiz";
 import Score from "./Score";
 import Result from "./Result";
+import { COLORS } from "../styles/COLORS";
 
 const Stack = createNativeStackNavigator();
 const _Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+const theme = {
+  colors: COLORS
+}
 
 const Nav = () => {
   const [user, setUser] = useState();
@@ -51,27 +63,48 @@ const Nav = () => {
     console.log("Done!");
   };
 
+  function CustomDrawerContent(props) {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        {/*Top Image */}
+        <Image
+          source={{
+            uri: "https://reactnative.dev/img/tiny_logo.png",
+          }}
+          style={styles.sideMenuProfileIcon}
+        />
+  
+        <DrawerContentScrollView {...props}>
+          <DrawerItemList {...props} />
+  
+        </DrawerContentScrollView>
+        <Text style = {{color: '#ccc'}}>Version 0.0.4</Text>
+      </SafeAreaView>
+    );
+  }
+
   /* Drawer */
   function AppDrawer({ navigation }) {
     return (
       <Drawer.Navigator
         initialRouteName="Home"
+        drawerContent = {(props) => <CustomDrawerContent {...props}/>}
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#0e0e0e",
+            backgroundColor: theme.colors.dicBlack1,
           },
           headerTitleStyle: {
             fontWeight: "bold",
-            color: "#fff",
+            color: theme.colors.dicWhite,
           },
           headerTitle: "InwDicJapan",
           drawerStyle: {
-            backgroundColor: "#3C687A",
+            backgroundColor: theme.colors.dicBlue,
           },
-          headerTintColor: '#fff',
-          drawerActiveBackgroundColor: "#fff",
-          drawerActiveTintColor: "#3C687A",
-          drawerInactiveTintColor: "#fff",
+          headerTintColor: theme.colors.dicWhite,
+          drawerActiveBackgroundColor: theme.colors.dicWhite,
+          drawerActiveTintColor: theme.colors.dicBlue,
+          drawerInactiveTintColor: theme.colors.dicWhite,
           unmountOnBlur: true,
           headerRight: () => (
             <Pressable
@@ -95,11 +128,24 @@ const Nav = () => {
         <Drawer.Screen
           name="Search"
           component={SearchStack}
-          options={{ title: 'Home'
-          }}
+          options={{ title: "Home",  drawerIcon: ({focused, size}) => (
+            <AntDesign name="home" size={size} color= {focused? theme.colors.dicBlue: theme.colors.dicWhite} />
+         ) }}
         />
-        <Drawer.Screen name="vocabStack" component={user?VocabStack:Redirect} options={{title: 'Vocab List'}} />
-        <Drawer.Screen name="quizStack" component={QuizStack} options = {{title: 'Quiz'}}/>
+        <Drawer.Screen
+          name="vocabStack"
+          component={user ? VocabStack : Redirect}
+          options={{ title: "Vocab List", drawerIcon: ({focused, size}) => (
+            <Entypo name="list" size={size} color= {focused?theme.colors.dicBlue: theme.colors.dicWhite} />
+          ) }}
+        />
+        <Drawer.Screen
+          name="quizStack"
+          component={QuizStack}
+          options={{ title: "Quiz", drawerIcon: ({focused, size}) => (
+            <Ionicons name="game-controller-outline" size={size} color= {focused? theme.colors.dicBlue: theme.colors.dicWhite} />
+          ) }}
+        />
       </Drawer.Navigator>
     );
   }
@@ -111,13 +157,13 @@ const Nav = () => {
         initialRouteName="Drawer"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#0e0e0e",
+            backgroundColor: theme.colors.dicBlack1,
           },
           headerTitleStyle: {
-            color: "#fff",
+            color: theme.colors.dicWhite,
           },
           statusBarStyle: "light",
-          statusBarColor: "#0e0e0e",
+          statusBarColor: theme.colors.dicBlack1,
           animation: "slide_from_right",
         }}
       >
@@ -146,46 +192,27 @@ const Nav = () => {
     );
   }
 
+  // Search screen and result
   function SearchStack() {
-    return(<_Stack.Navigator>
-      <_Stack.Screen
-      name = "Home"
-      component = {Home}
-      options = {{headerShown: false}}
-      />
-      <_Stack.Screen
-      name = "Result"
-      component = {Result}
-      initialParams={{ user: user }}
-      options = {{headerShown: false}}
-      />
-       <_Stack.Screen
-          name="VocabList"
-          component={VocabList}
-          initialParams={{ user: user }}
-          options={{headerShown: false}}
-        />
-
-        <_Stack.Screen
-          name="createList"
-          component={CreateVocabList}
-          options={{
-            presentation: "transparentModal",
-            headerShown: false,
-          }}
-        />
-    </_Stack.Navigator>)
-    
-  }
-
-  function VocabStack() {
     return (
+      // using a different stack because of a Modal
       <_Stack.Navigator>
         <_Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <_Stack.Screen
+          name="Result"
+          component={Result}
+          initialParams={{ user: user }}
+          options={{ headerShown: false }}
+        />
+        <_Stack.Screen
           name="VocabList"
           component={VocabList}
           initialParams={{ user: user }}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
 
         <_Stack.Screen
@@ -200,36 +227,58 @@ const Nav = () => {
     );
   }
 
+  // Vocab list and creating list
+  function VocabStack() {
+    return (
+      <_Stack.Navigator>
+        <_Stack.Screen
+          name="VocabList"
+          component={VocabList}
+          initialParams={{ user: user }}
+          options={{ headerShown: false }}
+        />
+
+        <_Stack.Screen
+          name="createList"
+          component={CreateVocabList}
+          options={{
+            presentation: "transparentModal",
+            headerShown: false,
+          }}
+        />
+      </_Stack.Navigator>
+    );
+  }
+
+  // Difficulty, timer and score
   function QuizStack() {
     return (
-      <_Stack.Navigator
-      initialRouteName="selectDifficulty"
-      >
+      <_Stack.Navigator initialRouteName="selectDifficulty">
         <_Stack.Screen
           name="selectDifficulty"
           component={SelectDifficulty}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
 
         <_Stack.Screen
           name="timer"
           component={Timer}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
-          <_Stack.Screen
+        <_Stack.Screen
           name="quiz"
           component={Quiz}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
         <_Stack.Screen
           name="score"
           component={Score}
           options={{
-            headerShown: false
+            headerShown: false,
           }}
         />
       </_Stack.Navigator>
@@ -243,3 +292,15 @@ const Nav = () => {
 };
 
 export default Nav;
+
+
+const styles = StyleSheet.create({
+  sideMenuProfileIcon: {
+    resizeMode: 'cover',
+    padding: 10,
+    width: 100,
+    height: 100,
+    margin: 10,
+    alignSelf: "center",
+  }
+});

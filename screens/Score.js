@@ -8,35 +8,24 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
+import { globalStyle } from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
 
 const Score = ({ navigation, route }) => {
   const { score } = route.params;
   return (
-    <View style={styles.container}>
-      <Text style={[styles.head, {}]}>Your Score is!</Text>
+    <View style={[globalStyle.container, {alignItems: 'center'}]}>
+      <Text style={globalStyle.h1}>Your Score is!</Text>
       <View
-        style={{
-          height: 0.5,
-          width: 240,
-          marginTop: 10,
-          backgroundColor: "#3C687A",
-        }}
+        style={styles.line}
       />
       <Text style={[styles.text, {}]}>{score}</Text>
 
       <TouchableOpacity
-        style={{
-          backgroundColor: "#3C687A",
-          width: 80,
-          height: 80,
-          borderRadius: 15,
-          alignItems: "center",
-          justifyContent: 'center',
-          marginTop: 100
-        }}
+        style={styles.button}
         onPress={() => navigation.navigate('timer')}
       >
-        <MaterialIcons name="replay" size={40} color="white"/>
+        <MaterialIcons name="replay" size={40} color= {COLORS.dicWhite}/>
       </TouchableOpacity>
     </View>
   );
@@ -45,23 +34,26 @@ const Score = ({ navigation, route }) => {
 export default Score;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "black",
-    flex: 1,
-    alignItems: "center",
-  },
-  head: {
-    color: "white",
-    fontSize: 40,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 20,
+  line: {
+    height: 0.5,
+    width: 240,
+    marginTop: 10,
+    backgroundColor: COLORS.dicBlue,
   },
   text: {
-    color: "white",
+    color: COLORS.dicWhite,
     fontSize: 144,
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 90,
   },
+  button: {
+    backgroundColor: COLORS.dicBlue,
+    width: 80,
+    height: 80,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: 'center',
+    marginTop: 100
+  }
 });

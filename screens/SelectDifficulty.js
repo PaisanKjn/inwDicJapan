@@ -1,13 +1,19 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { useState } from "react";
+import { globalStyle } from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
+
+const theme = {
+  colors: COLORS
+}
 
 const SelectDifficulty = ({ navigation }) => {
   const [difficulty, setDifficulty] = useState(5);
   return (
-    <View style={{ backgroundColor: "#0e0e0e", flex: 1 }}>
-      <Text style = {{fontSize: 25, color: 'white', textAlign: 'center', marginVertical: 20, fontWeight: "bold"}}>Select Difficulty</Text>
-      <View style={{ alignItems: "center" }}>
+    <View style={globalStyle.container}>
+      <Text style = {globalStyle.h1}>Select Difficulty</Text>
+      <View style={{ alignItems: "center", marginTop: 30 }}>
         <TouchableOpacity
           style={[
             styles.button,
@@ -92,15 +98,15 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   buttonSelected: {
-    backgroundColor: "white",
+    backgroundColor: theme.colors.dicWhite,
   },
   buttonUnselected: {
-    backgroundColor: "#0e0e0e",
-    borderColor: "#3C687A",
+    backgroundColor: theme.colors.dicBlack1,
+    borderColor: theme.colors.dicBlue,
     borderWidth: 1,
   },
   buttonText: {
-    color: '#3C687A',
-    fontSize: 18
+    color: theme.colors.dicBlue,
+    fontSize: 20
   }
 });

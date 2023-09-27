@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
-  TextInput,
+  Pressable,
 } from "react-native";
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -12,6 +12,9 @@ import setList from "C:/inwDicJapan/setList";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { FontAwesome } from "@expo/vector-icons";
+import { COLORS } from "../styles/COLORS";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,32 +46,33 @@ const VocabList = ({ navigation, route }) => {
     console.log("DONEZO");
   };
 
-
   // Render each vocab List
   const setView = ({ item }) => (
-    <View>
-      {user.username === item.username ? (
-        <View
-          style={{
-            flexDirection: "row",
-            marginBottom: 15,
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: null }]}
-            onPress={() => navigation.navigate("WordList", { vocabList: item })}
+    <Pressable
+      onPress={() => navigation.navigate("WordList", { vocabList: item })}
+      android_ripple={{ foreground: true, color: "#3aa" }}
+      style={{ backgroundColor: COLORS.dicBlue }}
+    >
+      <View>
+        {user.username === item.username ? (
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 30,
+              marginVertical: 10,
+              alignItems: "center",
+            }}
           >
-            <Text style={styles.text}>01</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("WordList", { vocabList: item })}
-          >
-            <Text style={styles.text}>{item.listName}</Text>
-          </TouchableOpacity>
-        </View>
-      ) : null}
-    </View>
+            <View style={[styles.button, { backgroundColor: null }]}>
+              <Text style={styles.text}>01</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>{item.listName}</Text>
+            </View>
+          </View>
+        ) : null}
+      </View>
+    </Pressable>
   );
 
   const handleOnCreate = () => {
@@ -77,24 +81,54 @@ const VocabList = ({ navigation, route }) => {
     navigation.navigate("createList", {
       user: user.username,
       vocabLists: vocabLists,
-      setVocabLists: setVocabLists
+      setVocabLists: setVocabLists,
     });
+  };
+
+  const handleOnDelete = (listName) => {
+    alert(listName + " deleted");
   };
 
   // Current "setList" data is imported (needs to be changed)
   return (
-    <View style={{ backgroundColor: "#3C687A", flex: 1, padding: 30 }}>
+    <View style={[styles.container]}>
       <Text style={styles.head}>Vocab List</Text>
       <View>
-        <FlatList data={setList} renderItem={setView} />
+        {/* <FlatList data={setList} renderItem={setView} /> */}
+        <SwipeListView
+          data={setList}
+          renderItem={(rowData, rowMap) => setView(rowData)}
+          renderHiddenItem={(rowData, rowMap) => (
+            <View
+              style={{
+                backgroundColor: COLORS.dicRed,
+                flex: 1,
+                alignItems: "flex-end",
+                justifyContent: "center",
+                paddingRight: 25,
+              }}
+            >
+              <Pressable onPress={() => handleOnDelete(rowData.item.listName)}>
+                <FontAwesome name="trash" size={30} color= {COLORS.dicWhite} />
+              </Pressable>
+            </View>
+          )}
+          disableRightSwipe={true}
+          rightOpenValue={-70}
+          rightActionValue={-50}
+        />
       </View>
 
-      <View style={{ flexDirection: "row" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          marginHorizontal: 30,
+          marginVertical: 10,
+        }}
+      >
         <TouchableOpacity
           style={styles.button}
-          onPress={
-            () => handleOnCreate()
-          }
+          onPress={() => handleOnCreate()}
         >
           <AntDesign name="plus" size={24} color="black" />
         </TouchableOpacity>
@@ -107,19 +141,25 @@ const VocabList = ({ navigation, route }) => {
 export default VocabList;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.dicBlue,
+    flex: 1,
+    paddingTop: 30,
+  },
   head: {
-    color: "white",
+    color: COLORS.dicWhite,
     fontSize: 40,
     textAlign: "left",
     marginVertical: 10,
+    marginHorizontal: 30,
   },
   text: {
-    fontSize: 25,
+    fontSize: 24,
     textAlignVertical: "center",
-    color: "#fff",
+    color: COLORS.dicWhite,
   },
   button: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.dicWhite,
     padding: 5,
     marginRight: 15,
     borderRadius: 20,

@@ -149,7 +149,7 @@ const Result = ({ navigation, route }) => {
       alert("You need an account to use this feature");
     } else {
       navigation.navigate("VocabList", { item: item });
-    }
+    } 
   };
 
   return (

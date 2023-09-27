@@ -14,6 +14,7 @@ import {
   withTiming,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { COLORS } from "../styles/COLORS";
 
 const wordlist = [
   {
@@ -48,7 +49,7 @@ const wordlist = [
 const Quiz = ({navigation}) => {
   const [listItems, setListItems] = useState(wordlist);
   const [index, setIndex] = useState(0);
-  const [time, setTime] = useState(3);
+  const [time, setTime] = useState(7);
   const [isAnswered, setIsAnswered] = useState(null);
   const [answer, setAnswer] = useState(null);
   const [score, setScore] = useState(0);
@@ -57,6 +58,7 @@ const Quiz = ({navigation}) => {
   let interval = null;
   const animation = useSharedValue({ width: width });
 
+  // If answer/timeout -> set answer
   useEffect(() => {
     if (isAnswered) {
       if (answer == word) {
@@ -71,17 +73,20 @@ const Quiz = ({navigation}) => {
     }
   }, [isAnswered]);
 
+  // if the question change > reset isAnswer and answer
   useEffect(() => {
     setIsAnswered(null);
     setAnswer(null);
   }, [index]);
 
+  // the main countdown, if answered > set cooldown to 3 secs
   useEffect(() => {
     if (time >= 1) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
       animation.value = { width: 0 };
+      console.log(animation.value.width)
     } else {
       setIsAnswered(true);
       setTimeout(() => {
@@ -90,6 +95,7 @@ const Quiz = ({navigation}) => {
        
       }, 3000);
       animation.value = { width: width };
+      console.log(animation.value.width)
     }
 
     return () => {
@@ -97,18 +103,13 @@ const Quiz = ({navigation}) => {
     };
   }, [time]);
 
+  // set countdown time
   useEffect(() => {
     if (!interval) {
-      setTime(3);
+      setTime(7);
     }
   }, [index]);
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${remainingSeconds.toString().padStart(1, "0") + "!"}`;
-  };
 
   const ItemView = ({ item }) => {
     return (
@@ -118,14 +119,14 @@ const Quiz = ({navigation}) => {
           styles.item,
           {
             backgroundColor: !isAnswered?
-            'white'
+            COLORS.dicWhite
             : item.vocab == word?
-              'green'
+            COLORS.dicGreen
               : answer == null?
-                'white'
+              COLORS.dicWhite
                 : answer == item.vocab?
-                  'red'
-                  :'white'
+                COLORS.dicRed
+                  : COLORS.dicWhite
           },
         ]}
         onPress={() => getAnswer(item)}
@@ -141,7 +142,17 @@ const Quiz = ({navigation}) => {
     setAnswer(item.vocab);
   };
 
+  // duration of animation
   const reducedWidth = useAnimatedStyle(() => {
+    return {
+      width: withTiming(animation.value.width, {
+        duration: 7000,
+      }),
+    };
+  });
+
+  // duration of reset animation
+  const resetWidth = useAnimatedStyle(() => {
     return {
       width: withTiming(animation.value.width, {
         duration: 3000,
@@ -149,19 +160,13 @@ const Quiz = ({navigation}) => {
     };
   });
 
-  const resetWidth = useAnimatedStyle(() => {
-    return {
-      width: withTiming(animation.value.width, {
-        duration: 100,
-      }),
-    };
-  });
-
   return (
+    
     <View style={[{ backgroundColor: "#0e0e0e", flex: 1 }]}>
+      {/* timer bar */}
       <Animated.View
         style={[
-          time === 0 ? resetWidth : reducedWidth,
+          time === 0 ? resetWidth: reducedWidth,
           { backgroundColor: "white", height: 15 },
         ]}
       >
