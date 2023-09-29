@@ -95,7 +95,7 @@ const Profile = ({ navigation, route }) => {
 
       <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity
-          style={globalStyle.buttonMain}
+          style={globalStyle.buttonSub}
           onPress={handleOnLogOut}
         >
           <Text style={globalStyle.textButton}>Log out</Text>
@@ -110,17 +110,20 @@ export default Profile;
 const styles = StyleSheet.create({
   topContainer: {
     flexDirection: "row",
-    marginVertical: 50,
+    padding: 20,
     alignItems: "center",
+    backgroundColor: COLORS.dicBlack2,
+    borderRadius: 18,
+    marginVertical: 20
   },
   circle: {
-    backgroundColor: COLORS.dicWhite,
+    backgroundColor: COLORS.dicBlack3,
     borderRadius: 100,
   },
   pic: {
-    width: 90,
-    height: 90,
-    margin: 5,
+    width: 100,
+    height: 100,
+    margin: 3,
     resizeMode: "cover",
   },
 });

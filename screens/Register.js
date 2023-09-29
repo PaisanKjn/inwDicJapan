@@ -9,12 +9,14 @@ import {
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { globalStyle } from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
 
 const Register = ({ route, navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [users, setUsers] = useState([]);
+  const dis = (username == '' || password == '')? true: false;
   const user = {
     username: username,
     password: password,
@@ -86,7 +88,6 @@ const Register = ({ route, navigation }) => {
 
   return (
     <View style={globalStyle.container}>
-      <Text style={globalStyle.h1}>Register</Text>
       {/* Input container */}
       <View style={styles.inputContainer}>
         <TextInput
@@ -94,12 +95,14 @@ const Register = ({ route, navigation }) => {
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
+          placeholderTextColor={COLORS.dicBlack4}
         />
         <TextInput
           style={globalStyle.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
+          placeholderTextColor={COLORS.dicBlack4}
           secureTextEntry={true}
         />
         <TextInput
@@ -107,17 +110,19 @@ const Register = ({ route, navigation }) => {
           value={passwordCheck}
           onChangeText={(value) => setPasswordCheck(value)}
           placeholder="Confirm password"
+          placeholderTextColor={COLORS.dicBlack4}
           secureTextEntry={true}
         />
       </View>
 
       {/* Button Container */}
-      <View style={{ flexDirection: "row-reverse" }}>
+      <View>
         <TouchableOpacity
-          style={globalStyle.buttonMain}
+          style={[globalStyle.buttonMain, {marginVertical: 10}]}
           onPress={() => {
             handleSubmit();
           }}
+          disabled = {dis}
         >
           <Text style={globalStyle.textButton}>Submit</Text>
         </TouchableOpacity>
@@ -129,8 +134,7 @@ const Register = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "center",
-    marginTop: 30,
-    marginBottom: 20,
+    marginTop: 20,
   },
 });
 

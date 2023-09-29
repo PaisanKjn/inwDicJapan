@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
+import Animated, { runOnJS } from "react-native-reanimated";
 import {
   useSharedValue,
   withTiming,
@@ -119,20 +119,20 @@ const Quiz = ({navigation}) => {
           styles.item,
           {
             backgroundColor: !isAnswered?
-            COLORS.dicWhite
+            COLORS.dicBlack2
             : item.vocab == word?
             COLORS.dicGreen
               : answer == null?
-              COLORS.dicWhite
+              COLORS.dicBlack2
                 : answer == item.vocab?
                 COLORS.dicRed
-                  : COLORS.dicWhite
+                  : COLORS.dicBlack2
           },
         ]}
         onPress={() => getAnswer(item)}
         disabled={isAnswered ? true : false}
       >
-        <Text style={{ color: "black", fontSize: 20 }}>{item.meaning}</Text>
+        <Text style={{ color: COLORS.dicBlack5, fontSize: 20 }}>{item.meaning}</Text>
       </TouchableOpacity>
     );
   };
@@ -146,7 +146,7 @@ const Quiz = ({navigation}) => {
   const reducedWidth = useAnimatedStyle(() => {
     return {
       width: withTiming(animation.value.width, {
-        duration: 7000,
+        duration: !isAnswered?7000:1000,
       }),
     };
   });
@@ -154,7 +154,7 @@ const Quiz = ({navigation}) => {
   // duration of reset animation
   const resetWidth = useAnimatedStyle(() => {
     return {
-      width: withTiming(animation.value.width, {
+      width: withTiming(0, {
         duration: 3000,
       }),
     };
@@ -162,12 +162,12 @@ const Quiz = ({navigation}) => {
 
   return (
     
-    <View style={[{ backgroundColor: "#0e0e0e", flex: 1 }]}>
+    <View style={[{ backgroundColor: COLORS.dicBlack1, flex: 1 }]}>
       {/* timer bar */}
       <Animated.View
         style={[
-          time === 0 ? resetWidth: reducedWidth,
-          { backgroundColor: "white", height: 15 },
+          reducedWidth,
+          { backgroundColor: COLORS.dicWhite, height: 15 },
         ]}
       >
         <Text>{time}</Text>
@@ -202,16 +202,16 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 20,
-    height: 130,
-    width: 130,
-    marginBottom: 5,
-    marginHorizontal: 5,
+    height: 210,
+    width: 160,
+    marginBottom: 20,
+    marginHorizontal: 10,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   question: {
-    color: "white",
+    color: COLORS.dicWhite,
     fontSize: 48,
     marginTop: 50,
     textAlign: "center",

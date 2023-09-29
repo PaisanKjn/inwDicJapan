@@ -21,6 +21,7 @@
     "expo-av": "~13.4.1",
     "expo-file-system": "~15.4.4",
     "expo-image-picker": "~14.3.2",
+    "expo-navigation-bar": "~2.3.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-updates": "^0.18.12",

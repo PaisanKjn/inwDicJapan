@@ -142,7 +142,7 @@ export default VocabList;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.dicBlue,
+    backgroundColor: COLORS.dicBlack1,
     flex: 1,
     paddingTop: 30,
   },

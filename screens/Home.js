@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  StatusBar
 } from "react-native";
 import React from "react";
 import { useState } from "react";
@@ -12,16 +13,14 @@ import { AntDesign } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
 
-const theme = {
-  colors: COLORS,
-};
+
 
 const Home = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isJPTH, setIsJPTH] = useState(true);
   const { height, width } = useWindowDimensions();
+  const dis = (searchQuery == '')? true: false;
 
   const handleOnSearch = () => {
     if (searchQuery.trim() != "") {
@@ -31,6 +30,7 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
+    
       {/* Top Container */}
       <View style={styles.topContainer}>
         <View style={styles.topContainer1}>
@@ -39,14 +39,15 @@ const Home = ({ navigation }) => {
             value={searchQuery}
             onChangeText={(value) => setSearchQuery(value)}
             placeholder="Enter Text"
-            placeholderTextColor={"#999999"}
-            cursorColor={theme.colors.dicBlue}
+            placeholderTextColor={COLORS.dicBlack4}
+            cursorColor={COLORS.dicBlue}
           />
           <TouchableOpacity
             style={styles.button}
             onPress={() => handleOnSearch()}
+            disabled = {dis}
           >
-            <Ionicons name="search" size={24} color={theme.colors.dicWhite} />
+            <Ionicons name="search" size={24} color={COLORS.dicWhite} />
           </TouchableOpacity>
         </View>
       </View>
@@ -64,7 +65,7 @@ const Home = ({ navigation }) => {
           <AntDesign
             name="arrowright"
             size={24}
-            color={theme.colors.dicWhite}
+            color={COLORS.dicWhite}
           />
         </TouchableOpacity>
 
@@ -80,7 +81,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   topContainer: {
-    backgroundColor: theme.colors.dicBlack1,
+    backgroundColor: COLORS.dicBlack1,
     padding: 30,
     paddingVertical: 50,
     height: "100%",
@@ -93,13 +94,13 @@ const styles = StyleSheet.create({
   bottomContainer: {
     justifyContent: "space-around",
     flexDirection: "row",
-    backgroundColor: theme.colors.dicBlack2,
+    backgroundColor: COLORS.dicBlack3,
     paddingVertical: 50,
     position: "absolute",
     bottom: 0,
   },
   langButton: {
-    backgroundColor: theme.colors.dicWhite,
+    backgroundColor: COLORS.dicBlack2,
     padding: 15,
     borderRadius: 20,
     flex: 3,
@@ -109,9 +110,10 @@ const styles = StyleSheet.create({
   langText: {
     textAlign: "center",
     fontSize: 20,
+    color: COLORS.dicWhite
   },
   button: {
-    backgroundColor: theme.colors.dicBlue,
+    backgroundColor: COLORS.dicBlue,
     height: 50,
     weight: 50,
     paddingHorizontal: 30,
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 25,
-    color: theme.colors.dicWhite,
+    color: COLORS.dicWhite,
     height: 100,
   },
   arrow: {

@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./Home";
 import VocabList from "./VocabList";
-import { Pressable, Text, Image, View, StyleSheet,SafeAreaView } from "react-native";
+import { Pressable, Text, Image, View, StyleSheet,SafeAreaView} from "react-native";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
@@ -28,13 +28,13 @@ import Quiz from "./Quiz";
 import Score from "./Score";
 import Result from "./Result";
 import { COLORS } from "../styles/COLORS";
+import * as NavigationBar from 'expo-navigation-bar'
+
+NavigationBar.setBackgroundColorAsync(COLORS.dicBlack1)
 
 const Stack = createNativeStackNavigator();
 const _Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const theme = {
-  colors: COLORS
-}
 
 const Nav = () => {
   const [user, setUser] = useState();
@@ -78,7 +78,7 @@ const Nav = () => {
           <DrawerItemList {...props} />
   
         </DrawerContentScrollView>
-        <Text style = {{color: '#ccc'}}>Version 0.0.4</Text>
+        <Text style = {{color: COLORS.dicBlack5}}>Version 0.0.5</Text>
       </SafeAreaView>
     );
   }
@@ -91,20 +91,22 @@ const Nav = () => {
         drawerContent = {(props) => <CustomDrawerContent {...props}/>}
         screenOptions={{
           headerStyle: {
-            backgroundColor: theme.colors.dicBlack1,
+            backgroundColor: COLORS.dicBlack1,
           },
           headerTitleStyle: {
             fontWeight: "bold",
-            color: theme.colors.dicWhite,
+            color: COLORS.dicWhite,
           },
           headerTitle: "InwDicJapan",
           drawerStyle: {
-            backgroundColor: theme.colors.dicBlue,
+            backgroundColor: COLORS.dicBlack2,
           },
-          headerTintColor: theme.colors.dicWhite,
-          drawerActiveBackgroundColor: theme.colors.dicWhite,
-          drawerActiveTintColor: theme.colors.dicBlue,
-          drawerInactiveTintColor: theme.colors.dicWhite,
+          headerTintColor: COLORS.dicWhite,
+          drawerActiveBackgroundColor: COLORS.dicBlack2,
+          drawerInactiveBackgroundColor: COLORS.dicBlack3,
+          drawerActiveTintColor: COLORS.dicWhite,
+          drawerInactiveTintColor: COLORS.dicBlack5,
+          headerShadowVisible: false,
           unmountOnBlur: true,
           headerRight: () => (
             <Pressable
@@ -129,21 +131,21 @@ const Nav = () => {
           name="Search"
           component={SearchStack}
           options={{ title: "Home",  drawerIcon: ({focused, size}) => (
-            <AntDesign name="home" size={size} color= {focused? theme.colors.dicBlue: theme.colors.dicWhite} />
+            <AntDesign name="home" size={size} color= {focused? COLORS.dicWhite: COLORS.dicBlack4} />
          ) }}
         />
         <Drawer.Screen
           name="vocabStack"
           component={user ? VocabStack : Redirect}
           options={{ title: "Vocab List", drawerIcon: ({focused, size}) => (
-            <Entypo name="list" size={size} color= {focused?theme.colors.dicBlue: theme.colors.dicWhite} />
+            <Entypo name="list" size={size} color= {focused?COLORS.dicWhite: COLORS.dicBlack4} />
           ) }}
         />
         <Drawer.Screen
           name="quizStack"
           component={QuizStack}
           options={{ title: "Quiz", drawerIcon: ({focused, size}) => (
-            <Ionicons name="game-controller-outline" size={size} color= {focused? theme.colors.dicBlue: theme.colors.dicWhite} />
+            <Ionicons name="game-controller-outline" size={size} color={focused?COLORS.dicWhite: COLORS.dicBlack4}  />
           ) }}
         />
       </Drawer.Navigator>
@@ -157,13 +159,14 @@ const Nav = () => {
         initialRouteName="Drawer"
         screenOptions={{
           headerStyle: {
-            backgroundColor: theme.colors.dicBlack1,
+            backgroundColor: COLORS.dicBlack1,
           },
+          headerTintColor: COLORS.dicWhite,
           headerTitleStyle: {
-            color: theme.colors.dicWhite,
+            color: COLORS.dicWhite,
           },
           statusBarStyle: "light",
-          statusBarColor: theme.colors.dicBlack1,
+          statusBarColor: COLORS.dicBlack1,
           animation: "slide_from_right",
         }}
       >
@@ -285,7 +288,8 @@ const Nav = () => {
     );
   }
   return (
-    <NavigationContainer>
+    <NavigationContainer
+    >
       <UserStack />
     </NavigationContainer>
   );

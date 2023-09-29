@@ -16,6 +16,7 @@ const Login = ({ navigation, route }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
+  const dis = (username == '' || password == '')? true: false;
 
   /* For now logging*/
   useEffect(() => {
@@ -84,8 +85,6 @@ const Login = ({ navigation, route }) => {
 
   return (
     <View style={globalStyle.container}>
-      <Text style={globalStyle.h1}>Login</Text>
-
       {/* Input Container */}
       <View style={styles.inputContainer}>
         <TextInput
@@ -93,28 +92,32 @@ const Login = ({ navigation, route }) => {
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
+          placeholderTextColor={COLORS.dicBlack4}
         />
         <TextInput
           style={globalStyle.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
+          placeholderTextColor={COLORS.dicBlack4}
           secureTextEntry={true}
         />
       </View>
 
       {/* Button container */}
-      <View style={{ flexDirection: "row-reverse" }}>
+      <View>
         <TouchableOpacity
-          style={[globalStyle.buttonMain, { marginLeft: 10 }]}
+          style={[globalStyle.buttonMain, {marginVertical: 10}]}
           onPress={() => {
             handleSubmit();
           }}
+          disabled = {dis}
         >
           <Text style={globalStyle.textButton}>Login</Text>
         </TouchableOpacity>
+        <Text style={[globalStyle.h3, {color: COLORS.dicBlack5}]}>Or</Text>
         <TouchableOpacity
-          style={globalStyle.buttonSub}
+          style={[globalStyle.buttonSub,  {marginVertical: 10}]}
           onPress={() => {
             navigation.navigate("Register");
           }}
@@ -129,8 +132,7 @@ const Login = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "center",
-    marginTop: 30,
-    marginBottom: 20,
+    marginTop: 20
   },
 });
 
