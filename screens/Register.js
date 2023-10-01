@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 
 const Register = ({ route, navigation }) => {
@@ -87,18 +87,18 @@ const Register = ({ route, navigation }) => {
   };
 
   return (
-    <View style={globalStyle.container}>
+    <View style={Global.container}>
       {/* Input container */}
       <View style={styles.inputContainer}>
         <TextInput
-          style={globalStyle.input}
+          style={Global.input}
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
           placeholderTextColor={COLORS.dicBlack4}
         />
         <TextInput
-          style={globalStyle.input}
+          style={Global.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
@@ -106,7 +106,7 @@ const Register = ({ route, navigation }) => {
           secureTextEntry={true}
         />
         <TextInput
-          style={globalStyle.input}
+          style={Global.input}
           value={passwordCheck}
           onChangeText={(value) => setPasswordCheck(value)}
           placeholder="Confirm password"
@@ -118,13 +118,13 @@ const Register = ({ route, navigation }) => {
       {/* Button Container */}
       <View>
         <TouchableOpacity
-          style={[globalStyle.buttonMain, {marginVertical: 10}]}
+          style={[Global.buttonMain, {marginVertical: 10}]}
           onPress={() => {
             handleSubmit();
           }}
           disabled = {dis}
         >
-          <Text style={globalStyle.textButton}>Submit</Text>
+          <Text style={Global.textButton}>Submit</Text>
         </TouchableOpacity>
       </View>
     </View>

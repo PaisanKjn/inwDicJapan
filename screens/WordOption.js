@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Animated, Pressable } from "react-native";
+import { StyleSheet, Text, View, Animated, Pressable, Alert } from "react-native";
 import React from "react";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { useWindowDimensions } from "react-native";
 import { useCardAnimation } from "@react-navigation/stack";
 import { FontAwesome } from "@expo/vector-icons";
@@ -9,6 +9,18 @@ import { FontAwesome } from "@expo/vector-icons";
 const WordOption = () => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
+
+  const confirmRemove = () => {
+    Alert.alert("Remove the list?", "Are you sure to remove your list?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: () => console.log("OK Pressed") },
+    ]);
+  };
+
   return (
     <View style={styles.modalContainer}>
       <Animated.View
@@ -44,11 +56,12 @@ const WordOption = () => {
           <Pressable
             style={{ flexDirection: "row", padding: 20 }}
             android_ripple={{ foreground: true, color: COLORS.dicBlack3 }}
+            onPress={confirmRemove}
           >
             <FontAwesome name="trash-o" size={30} color={COLORS.dicBlack4} />
             <Text
               style={[
-                globalStyle.h3,
+                Global.h3,
                 { marginLeft: 40, color: COLORS.dicBlack5, fontSize: 18 },
               ]}
             >

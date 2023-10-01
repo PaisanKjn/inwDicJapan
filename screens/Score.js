@@ -8,14 +8,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 
 const Score = ({ navigation, route }) => {
   const { score } = route.params;
   return (
-    <View style={[globalStyle.container, {alignItems: 'center'}]}>
-      <Text style={globalStyle.h1}>Your Score is!</Text>
+    <View style={[Global.container, {alignItems: 'center'}]}>
+      <Text style={Global.h1}>Your Score is!</Text>
       <View
         style={styles.line}
       />

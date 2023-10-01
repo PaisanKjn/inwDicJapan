@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { useWindowDimensions } from "react-native";
 import { useCardAnimation } from "@react-navigation/stack";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
@@ -85,7 +85,7 @@ const ListOption = () => {
             <FontAwesome name="trash-o" size={30} color={COLORS.dicBlack4} />
             <Text
               style={[
-                globalStyle.h3,
+                Global.h3,
                 { marginLeft: 40, color: COLORS.dicBlack5, fontSize: 18 },
               ]}
             >
@@ -105,7 +105,7 @@ const ListOption = () => {
             />
             <Text
               style={[
-                globalStyle.h3,
+                Global.h3,
                 { marginLeft: 33, color: COLORS.dicBlack5, fontSize: 18 },
               ]}
             >

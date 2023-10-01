@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -75,7 +75,7 @@ const Profile = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[globalStyle.container]}>
+    <View style={[Global.container]}>
       <View style={styles.topContainer}>
         <TouchableOpacity
           style={[styles.circle]}
@@ -88,17 +88,17 @@ const Profile = ({ navigation, route }) => {
             style={[styles.circle, styles.pic]}
           />
         </TouchableOpacity>
-        <Text style={[globalStyle.h2, { marginLeft: 40, marginTop: 0 }]}>
+        <Text style={[Global.h2, { marginLeft: 40, marginTop: 0 }]}>
           {user.username}
         </Text>
       </View>
 
       <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity
-          style={globalStyle.buttonSub}
+          style={Global.buttonSub}
           onPress={handleOnLogOut}
         >
-          <Text style={globalStyle.textButton}>Log out</Text>
+          <Text style={Global.textButton}>Log out</Text>
         </TouchableOpacity>
       </View>
     </View>

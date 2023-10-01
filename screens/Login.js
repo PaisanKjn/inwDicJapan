@@ -9,7 +9,7 @@ import {
 import { PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 
 const Login = ({ navigation, route }) => {
@@ -84,18 +84,18 @@ const Login = ({ navigation, route }) => {
   };
 
   return (
-    <View style={globalStyle.container}>
+    <View style={Global.container}>
       {/* Input Container */}
       <View style={styles.inputContainer}>
         <TextInput
-          style={globalStyle.input}
+          style={Global.input}
           value={username}
           onChangeText={(value) => setUsername(value)}
           placeholder="Enter username"
           placeholderTextColor={COLORS.dicBlack4}
         />
         <TextInput
-          style={globalStyle.input}
+          style={Global.input}
           value={password}
           onChangeText={(value) => setPassword(value)}
           placeholder="Enter password"
@@ -107,22 +107,22 @@ const Login = ({ navigation, route }) => {
       {/* Button container */}
       <View>
         <TouchableOpacity
-          style={[globalStyle.buttonMain, {marginVertical: 10}]}
+          style={[Global.buttonMain, {marginVertical: 10}]}
           onPress={() => {
             handleSubmit();
           }}
           disabled = {dis}
         >
-          <Text style={globalStyle.textButton}>Login</Text>
+          <Text style={Global.textButton}>Login</Text>
         </TouchableOpacity>
-        <Text style={[globalStyle.h3, {color: COLORS.dicBlack5}]}>Or</Text>
+        <Text style={[Global.h3, {color: COLORS.dicBlack5}]}>Or</Text>
         <TouchableOpacity
-          style={[globalStyle.buttonSub,  {marginVertical: 10}]}
+          style={[Global.buttonSub,  {marginVertical: 10}]}
           onPress={() => {
             navigation.navigate("Register");
           }}
         >
-          <Text style={globalStyle.textButton}>Register</Text>
+          <Text style={Global.textButton}>Register</Text>
         </TouchableOpacity>
       </View>
     </View>

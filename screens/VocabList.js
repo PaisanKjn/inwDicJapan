@@ -12,10 +12,9 @@ import setList from "C:/inwDicJapan/setList";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SwipeListView } from "react-native-swipe-list-view";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 
 const Stack = createNativeStackNavigator();
 
@@ -88,8 +87,8 @@ const VocabList = ({ navigation, route }) => {
   return (
     <View style={[styles.container]}>
       <View>
-        {/* <FlatList data={setList} renderItem={setView} /> */}
-        <SwipeListView
+        <FlatList data={setList} renderItem={setView} />
+        {/* <SwipeListView
           data={setList}
           renderItem={(rowData, rowMap) => setView(rowData)}
           renderHiddenItem={(rowData, rowMap) => (
@@ -110,7 +109,7 @@ const VocabList = ({ navigation, route }) => {
           disableRightSwipe={true}
           rightOpenValue={-70}
           rightActionValue={-50}
-        />
+        /> */}
       </View>
 
       

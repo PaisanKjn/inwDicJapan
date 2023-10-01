@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { SwipeListView } from "react-native-swipe-list-view";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 import SeparatorLine from "../components/SeparateLine";
 import { useWindowDimensions } from "react-native";
@@ -116,7 +116,7 @@ const Wordlist = ({ route, navigation }) => {
   return (
     <View style={[{ flex: 1, backgroundColor: COLORS.dicBlack1 }]}>
       <View style={styles.topContainer}>
-        <Text style={[globalStyle.h1, { textAlign: "left" }]}>
+        <Text style={[Global.h1, { textAlign: "left" }]}>
           {vocabList.listName}
         </Text>
         <SeparatorLine />

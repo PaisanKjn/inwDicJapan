@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 import { AntDesign } from '@expo/vector-icons';
 import Animated from "react-native-reanimated";
@@ -66,8 +66,8 @@ const SelectDifficulty = ({ navigation }) => {
   }
 
   return (
-    <ScrollView style={globalStyle.container}>
-      <Text style={globalStyle.h2}>Select Difficulty</Text>
+    <ScrollView style={Global.container}>
+      <Text style={Global.h2}>Select Difficulty</Text>
       <View style={{ alignItems: "center", marginVertical: 40 }}>
         <TouchableOpacity
           onPress={() => {

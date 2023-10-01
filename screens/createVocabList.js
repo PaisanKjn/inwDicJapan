@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useCardAnimation } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS } from "../styles/COLORS";
-import { globalStyle } from "../styles/Global";
+import Global from "../styles/Global";
 import { useRef } from "react";
 
 const CreateVocabList = ({ navigation, route }) => {
@@ -121,7 +121,7 @@ const CreateVocabList = ({ navigation, route }) => {
             />
             <TouchableOpacity
               style={[
-                globalStyle.buttonMain,
+                Global.buttonMain,
                 styles.button,
                 { marginBottom: 20 },
               ]}
@@ -132,7 +132,7 @@ const CreateVocabList = ({ navigation, route }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[
-                globalStyle.buttonSub,
+                Global.buttonSub,
                 styles.button,
                 { backgroundColor: COLORS.dicBlack3 },
               ]}
