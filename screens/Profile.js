@@ -60,11 +60,13 @@ const Profile = ({ navigation, route }) => {
     const dest = imgDir + filename;
     await FileSystem.copyAsync({ from: uri, to: dest });
     setImg(dest);
+    await route.params.setImage(dest);
     saveToDB();
   };
 
   const saveToDB = async () => {
     // sth sth database
+    
   };
 
   const handleOnLogOut = async () => {

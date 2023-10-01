@@ -14,7 +14,6 @@ import {
   Pressable,
   Text,
   Image,
-  View,
   StyleSheet,
   SafeAreaView,
 } from "react-native";
@@ -69,8 +68,9 @@ const config2 = {
   },
 };
 
-const Nav = () => {
+const Nav = ({route}) => {
   const [user, setUser] = useState();
+  const [image, setImage] = useState("https://reactnative.dev/img/tiny_logo.png")
 
   useEffect(() => {
     getAppUser();
@@ -81,8 +81,10 @@ const Nav = () => {
   /*get current user*/
   const getAppUser = async () => {
     try {
+      // Store as username only
       const value = await AsyncStorage.getItem("appUser");
       if (value !== null) {
+        // fetch from Backend, using async-str for the time being
         _value = JSON.parse(value);
         setUser(_value);
         console.log("GETTING DA USER");
@@ -151,9 +153,9 @@ const Nav = () => {
             >
               <Image
                 source={{
-                  uri: "https://reactnative.dev/img/tiny_logo.png",
+                  uri: image
                 }}
-                style={{ width: 40, height: 40, margin: 15 }}
+                style  = {styles.sideMenuProfileIcon}
               />
             </Pressable>
           ),
@@ -231,7 +233,7 @@ const Nav = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
-          initialParams={{ setUser: setUser }}
+          initialParams={{ setUser: setUser, setImage: setImage }}
         />
         <Stack.Screen
           name="Register"
@@ -392,10 +394,10 @@ export default Nav;
 const styles = StyleSheet.create({
   sideMenuProfileIcon: {
     resizeMode: "cover",
-    padding: 10,
-    width: 100,
-    height: 100,
-    margin: 10,
+    height: 50,
+    width: 50,
+    margin: 20,
     alignSelf: "center",
+    borderRadius: 100
   },
 });

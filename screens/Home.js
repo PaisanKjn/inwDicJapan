@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import React from "react";
 import { useState } from "react";
@@ -13,14 +13,31 @@ import { AntDesign } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
 import { COLORS } from "../styles/COLORS";
-
-
+import { useAnimatedStyle, useSharedValue, withTiming, Easing } from "react-native-reanimated";
+import Animated, { concat } from "react-native-reanimated";
 
 const Home = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isJPTH, setIsJPTH] = useState(true);
   const { height, width } = useWindowDimensions();
-  const dis = (searchQuery == '')? true: false;
+  const rotation = useSharedValue(0);
+  const dis = searchQuery == "" ? true : false;
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotateZ: withTiming(`${rotation.value}deg`, { duration: 700,
+            easing: Easing.inOut(Easing.exp)
+           } ),
+        },
+      ],
+    };
+  });
+
+  const handleRotation =() => {
+    rotation.value+=360
+  }
 
   const handleOnSearch = () => {
     if (searchQuery.trim() != "") {
@@ -30,7 +47,6 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-    
       {/* Top Container */}
       <View style={styles.topContainer}>
         <View style={styles.topContainer1}>
@@ -45,7 +61,7 @@ const Home = ({ navigation }) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => handleOnSearch()}
-            disabled = {dis}
+            disabled={dis}
           >
             <Ionicons name="search" size={24} color={COLORS.dicWhite} />
           </TouchableOpacity>
@@ -58,16 +74,19 @@ const Home = ({ navigation }) => {
           <Text style={styles.langText}>{isJPTH ? "Japanese" : "Thai"}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.arrow}
-          onPress={() => setIsJPTH(!isJPTH)}
+        <Animated.View
+          style = {animatedStyles}
         >
-          <AntDesign
-            name="arrowright"
-            size={24}
-            color={COLORS.dicWhite}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.arrow}
+            onPress={() => {
+              setIsJPTH(!isJPTH);
+              handleRotation();
+            }}
+          >
+            <AntDesign name="arrowright" size={24} color={COLORS.dicWhite} />
+          </TouchableOpacity>
+        </Animated.View>
 
         <TouchableOpacity style={styles.langButton}>
           <Text style={styles.langText}>{!isJPTH ? "Japanese" : "Thai"}</Text>
@@ -110,7 +129,7 @@ const styles = StyleSheet.create({
   langText: {
     textAlign: "center",
     fontSize: 20,
-    color: COLORS.dicWhite
+    color: COLORS.dicWhite,
   },
   button: {
     backgroundColor: COLORS.dicBlue,
@@ -127,7 +146,7 @@ const styles = StyleSheet.create({
   },
   arrow: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

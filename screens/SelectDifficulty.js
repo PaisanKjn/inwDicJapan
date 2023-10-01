@@ -61,7 +61,7 @@ const SelectDifficulty = ({ navigation }) => {
 
   const Line = () => {
     return(
-      <View style = {styles.Line}/>
+         <View style = {styles.Line}/>
     )
   }
 
@@ -236,5 +236,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
   },
-  Line: {height: 1, width: '80%', backgroundColor: COLORS.dicBlack4}
+  Line: {height: 1, width: 330, backgroundColor: COLORS.dicBlack4}
 });
