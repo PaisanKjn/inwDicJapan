@@ -14,28 +14,42 @@ import { Audio } from "expo-av";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { globalStyle } from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
+import SeparatorLine from "../components/SeparateLine";
+import { useWindowDimensions } from "react-native";
 
-const Wordlist = ({ route }) => {
+
+
+const Wordlist = ({ route, navigation }) => {
   const [repeat, setRepeat] = useState(1);
   const { vocabList } = route.params;
   const [sound, setSound] = useState();
+  const { width, height } = useWindowDimensions();
 
   const ItemView = ({ item }) => {
     return (
       //FlatList Item
       <Pressable
-        onLongPress={() => {}}
+        onLongPress={() => navigation.navigate('wordOption')}
         style={styles.item}
-        android_ripple={{ foreground: true, color: "#888" }}
+        android_ripple={{ foreground: true, color: COLORS.dicBlack3 }}
       >
+
+        <View>
         <Text style={[styles.textList]}>
           {item.vocab}
-          {"\n"}
+        </Text>
+        <Text style={{ fontSize: 24, color: COLORS.dicBlack5 }}>
           {item.meaning}
         </Text>
+        </View>
+      
       </Pressable>
     );
   };
+
+  const handleOnHold = (item) => {
+    navigation.navigate('wordOption');
+  }
 
   const handleOnDelete = (item) => {
     alert(item.vocab + " is deleted");
@@ -100,42 +114,20 @@ const Wordlist = ({ route }) => {
   }
 
   return (
-    <View style={[globalStyle.container, { paddingHorizontal: 0 }]}>
-      <Text style={[globalStyle.h1, { textAlign: "left", paddingLeft: 40 }]}>
-        {vocabList.listName}
-      </Text>
-      <View style={styles.line} />
-      <SafeAreaView style={{ flex: 1 }}>
-        <View>
-          {/* <FlatList
-            data={vocabList.vocab}
-            renderItem={ItemView}
-            keyExtractor={(item) => item.meaning.toString()}
-          /> */}
-          <SwipeListView
-            data={vocabList.vocab}
-            renderItem={(rowData, rowMap) => ItemView(rowData)}
-            renderHiddenItem={(rowData, rowMap) => (
-              <View
-                style={{
-                  backgroundColor: COLORS.dicRed,
-                  flex: 1,
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                  paddingRight: 25,
-                }}
-              >
-                <Pressable onPress={() => handleOnDelete(rowData.item)}>
-                  <FontAwesome name="trash" size={30} color={COLORS.dicWhite} />
-                </Pressable>
-              </View>
-            )}
-            disableRightSwipe={true}
-            rightOpenValue={-70}
-            rightActionValue={-50}
-          />
-        </View>
-      </SafeAreaView>
+    <View style={[{ flex: 1, backgroundColor: COLORS.dicBlack1 }]}>
+      <View style={styles.topContainer}>
+        <Text style={[globalStyle.h1, { textAlign: "left" }]}>
+          {vocabList.listName}
+        </Text>
+        <SeparatorLine />
+      </View>
+      <View style={styles.bottomContainer}>
+        <FlatList
+          data={vocabList.vocab}
+          renderItem={ItemView}
+          keyExtractor={(item) => item.meaning.toString()}
+        />
+      </View>
 
       {/* Sound buttons */}
       <TouchableOpacity
@@ -162,22 +154,26 @@ const Wordlist = ({ route }) => {
 export default Wordlist;
 
 const styles = StyleSheet.create({
-  line: {
-    height: 0.5,
-    width: 240,
-    marginTop: 10,
-    backgroundColor: COLORS.dicBlue,
-    marginLeft: 40,
+  topContainer: {
+    backgroundColor: COLORS.dicBlack1,
+    paddingHorizontal: 20,
+  },
+  bottomContainer: {
+    backgroundColor: COLORS.dicBlack2,
+    elevation: 0,
+    zIndex: 1,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    flex: 1,
   },
   textList: {
-    fontSize: 18,
     fontSize: 32,
     color: COLORS.dicWhite,
   },
   item: {
     paddingVertical: 20,
     justifyContent: "center",
-    backgroundColor: COLORS.dicBlack1,
+    // backgroundColor: COLORS.dicBlack1,
     paddingLeft: 40,
   },
   textButton: {
@@ -190,11 +186,12 @@ const styles = StyleSheet.create({
     width: 55,
     position: "absolute",
     backgroundColor: COLORS.dicBlue,
-    borderRadius: 20,
+    borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
     margin: 20,
     bottom: 0,
     right: 0,
+    zIndex: 2,
   },
 });

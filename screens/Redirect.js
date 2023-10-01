@@ -14,14 +14,14 @@ const Redirect = ({ navigation }) => {
       </View>
       <View style={styles.bottomContainer}>
         <TouchableOpacity
-          style={[globalStyle.buttonMain, { width: 300,}]}
+          style={[globalStyle.buttonMain]}
           onPress={() => navigation.navigate("Login")}
         >
           <Text style={globalStyle.textButton}>Log In</Text>
         </TouchableOpacity>
         <Text style={{ color: "#999", marginVertical: 10 }}>Or</Text>
         <TouchableOpacity
-          style={[globalStyle.buttonSub, { width: 300,}]}
+          style={[globalStyle.buttonSub]}
           onPress={() => navigation.goBack()}
         >
           <Text style={globalStyle.textButton}>Go Back</Text>

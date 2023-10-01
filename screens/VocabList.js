@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../styles/COLORS";
+import { globalStyle } from "../styles/Global";
 
 const Stack = createNativeStackNavigator();
 
@@ -48,31 +49,25 @@ const VocabList = ({ navigation, route }) => {
 
   // Render each vocab List
   const setView = ({ item }) => (
-    <Pressable
-      onPress={() => navigation.navigate("WordList", { vocabList: item })}
-      android_ripple={{ foreground: true, color: "#3aa" }}
-      style={{ backgroundColor: COLORS.dicBlue }}
-    >
-      <View>
-        {user.username === item.username ? (
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 30,
-              marginVertical: 10,
-              alignItems: "center",
-            }}
-          >
-            <View style={[styles.button, { backgroundColor: null }]}>
-              <Text style={styles.text}>01</Text>
-            </View>
-            <View>
-              <Text style={styles.text}>{item.listName}</Text>
-            </View>
-          </View>
-        ) : null}
-      </View>
-    </Pressable>
+    <View>
+      {user.username === item.username ? (
+        <Pressable
+          onPress={() => navigation.navigate("WordList", { vocabList: item })}
+          onLongPress={() => navigation.navigate("listOption")}
+          android_ripple={{ foreground: true, color: COLORS.dicBlack3 }}
+          style={{
+            backgroundColor: COLORS.dicBlack2,
+            padding: 20,
+            flexDirection: "row",
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Text style={styles.text}>{item.listName}</Text>
+          <AntDesign name="right" size={30} color={COLORS.dicBlack4} />
+        </Pressable>
+      ) : null}
+    </View>
   );
 
   const handleOnCreate = () => {
@@ -92,7 +87,6 @@ const VocabList = ({ navigation, route }) => {
   // Current "setList" data is imported (needs to be changed)
   return (
     <View style={[styles.container]}>
-      <Text style={styles.head}>Vocab List</Text>
       <View>
         {/* <FlatList data={setList} renderItem={setView} /> */}
         <SwipeListView
@@ -109,7 +103,7 @@ const VocabList = ({ navigation, route }) => {
               }}
             >
               <Pressable onPress={() => handleOnDelete(rowData.item.listName)}>
-                <FontAwesome name="trash" size={30} color= {COLORS.dicWhite} />
+                <FontAwesome name="trash" size={30} color={COLORS.dicWhite} />
               </Pressable>
             </View>
           )}
@@ -119,21 +113,14 @@ const VocabList = ({ navigation, route }) => {
         />
       </View>
 
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 30,
-          marginVertical: 10,
-        }}
-      >
+      
         <TouchableOpacity
           style={styles.button}
           onPress={() => handleOnCreate()}
         >
-          <AntDesign name="plus" size={24} color="black" />
+          <AntDesign name="plus" size={24} color= {COLORS.dicWhite} />
         </TouchableOpacity>
-        <Text style={styles.text}>Create a new vocab list</Text>
-      </View>
+
     </View>
   );
 };
@@ -159,13 +146,15 @@ const styles = StyleSheet.create({
     color: COLORS.dicWhite,
   },
   button: {
-    backgroundColor: COLORS.dicWhite,
-    padding: 5,
-    marginRight: 15,
-    borderRadius: 20,
+    backgroundColor: COLORS.dicBlue,
+    margin:20,
+    borderRadius: 100,
     width: 55,
     height: 55,
     justifyContent: "center",
     alignItems: "center",
+    position: 'absolute',
+    bottom: 0,
+    right: 0
   },
 });

@@ -1,10 +1,18 @@
-import { View} from 'react-native'
-import { COLORS } from '../styles/COLORS'
+import { View } from "react-native";
+import { COLORS } from "../styles/COLORS";
 
 const SeparateLine = () => {
   return (
-    <View style = {{height: 1, width: 'auto', backgroundColor: COLORS.dicBlack4}}/>
-  )
-}
+    <View
+      style={{
+        height: 2,
+        width: "80%",
+        backgroundColor: COLORS.dicBlue,
+        alignSelf: "center",
+        marginVertical: 20
+      }}
+    />
+  );
+};
 
-export default SeparateLine
+export default SeparateLine;

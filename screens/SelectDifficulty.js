@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
 import { globalStyle } from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 import { AntDesign } from '@expo/vector-icons';
-import SeparateLine from "../components/SeparateLine";
 import Animated from "react-native-reanimated";
 import {
   useSharedValue,
@@ -60,9 +59,14 @@ const SelectDifficulty = ({ navigation }) => {
     };
   });
 
+  const Line = () => {
+    return(
+      <View style = {styles.Line}/>
+    )
+  }
 
   return (
-    <View style={globalStyle.container}>
+    <ScrollView style={globalStyle.container}>
       <Text style={globalStyle.h2}>Select Difficulty</Text>
       <View style={{ alignItems: "center", marginVertical: 40 }}>
         <TouchableOpacity
@@ -88,8 +92,7 @@ const SelectDifficulty = ({ navigation }) => {
             </Text>
           </Animated.View>
         </TouchableOpacity>
-        <SeparateLine/>
-
+        <Line/>
         <TouchableOpacity
          
           onPress={() => {
@@ -113,8 +116,7 @@ const SelectDifficulty = ({ navigation }) => {
           </Text>
           </Animated.View>
         </TouchableOpacity>
-        <SeparateLine/>
-
+        <Line/>
         <TouchableOpacity
          
          onPress={() => {
@@ -138,8 +140,7 @@ const SelectDifficulty = ({ navigation }) => {
          </Text>
          </Animated.View>
        </TouchableOpacity>
-       <SeparateLine/>
-
+       <Line/>
        <TouchableOpacity
          
           onPress={() => {
@@ -163,7 +164,7 @@ const SelectDifficulty = ({ navigation }) => {
           </Text>
           </Animated.View>
         </TouchableOpacity>
-        <SeparateLine/>
+        <Line/>
         <TouchableOpacity
           
           onPress={() => {
@@ -198,7 +199,7 @@ const SelectDifficulty = ({ navigation }) => {
       >
        <AntDesign name="caretright" size={24} color= {COLORS.dicWhite} />
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -235,4 +236,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
   },
+  Line: {height: 1, width: '80%', backgroundColor: COLORS.dicBlack4}
 });

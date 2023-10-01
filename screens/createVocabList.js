@@ -7,30 +7,31 @@ import {
   Animated,
   Button,
   TextInput,
+  Keyboard,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useCardAnimation } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { COLORS } from "../styles/COLORS";
 import { globalStyle } from "../styles/Global";
+import { useRef } from "react";
 
 const CreateVocabList = ({ navigation, route }) => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
   const [listName, setListName] = useState("");
-  const { user, vocabLists, setVocabLists} = route.params;
+  const { user, vocabLists, setVocabLists } = route.params;
   const vocabList = {
     username: user,
     listName: listName,
     vocab: [],
   };
-  
+  const inputRef = useRef();
 
-  useEffect(()=> {
-    console.log('USER IS ');
-  console.log(user);
-
-  }, []) 
+  useEffect(() => {
+    console.log("USER IS ");
+    console.log(user);
+  }, []);
 
   const handleOnSubmit = () => {
     if (isAlreadyExisted()) {
@@ -42,42 +43,40 @@ const CreateVocabList = ({ navigation, route }) => {
     //AsyncStorage.removeItem('vocabLists')
   };
 
-
   const handleSubmit = async () => {
     try {
       const updatedVocabLists = [...vocabLists, vocabList];
-    setVocabLists(updatedVocabLists);
-    await AsyncStorage.setItem("vocabLists", JSON.stringify(updatedVocabLists));
-    console.log('CREATED YAY')
-    handleFinish(updatedVocabLists);
-    } catch(e) {
-      console.log(e)
+      setVocabLists(updatedVocabLists);
+      await AsyncStorage.setItem(
+        "vocabLists",
+        JSON.stringify(updatedVocabLists)
+      );
+      console.log("CREATED YAY");
+      handleFinish(updatedVocabLists);
+    } catch (e) {
+      console.log(e);
     }
-    
   };
 
   const handleFinish = (updatedVocabLists) => {
-    navigation.navigate("VocabList", {updatedVocabLists: updatedVocabLists});
+    navigation.navigate("VocabList", { updatedVocabLists: updatedVocabLists });
     alert("Vocab list created");
-  }
+  };
 
   const isAlreadyExisted = () => {
-
-    if(!vocabLists) {
-      return false
+    if (!vocabLists) {
+      return false;
     }
-     const result = vocabLists.filter((vocabLists) => {
+    const result = vocabLists.filter((vocabLists) => {
       if (listName == vocabLists.listName && user == vocabLists.username) {
         return vocabLists;
       }
-     })
-     return result.length > 0 ? true : false;
+    });
+    return result.length > 0 ? true : false;
   };
 
   return (
-    <View
-      style={styles.modalContainer}
-    >
+    <View style={styles.modalContainer}>
       <Animated.View
         style={[
           {
@@ -96,27 +95,56 @@ const CreateVocabList = ({ navigation, route }) => {
         ]}
       >
         <View style={styles.viewContainer}>
-          <Text>Create A New Word List</Text>
-          <TextInput
-            style={styles.text}
-            value={listName}
-            placeholder="Enter a new word list name"
-            onChangeText={(value) => setListName(value)}
+          <View
+            style={{
+              borderRadius: 100,
+              backgroundColor: COLORS.dicBlack3,
+              width: "40%",
+              height: 5,
+              alignSelf: "center",
+              marginTop: 10,
+              marginBottom: 20,
+            }}
           />
-          <TouchableOpacity
-            style={[globalStyle.buttonMain, styles.button, {marginBottom: 20}]}
-            mode="contained"
-            onPress={() => handleOnSubmit()}
-          >
-            <Text style={{ color: COLORS.dicWhite }}>Create</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[globalStyle.buttonSub, styles.button]}
-            mode="contained"
-            onPress={navigation.goBack}
-          >
-            <Text style={{ color: "#3C687A" }}>Close</Text>
-          </TouchableOpacity>
+
+          <View style = {{padding: 20}}>
+            <Text style = {{color: COLORS.dicBlack5, fontWeight:800}}>Create A New Word List</Text>
+            <TextInput
+              style={styles.text}
+              value={listName}
+              placeholder="Enter a new word list name"
+              onChangeText={(value) => setListName(value)}
+              placeholderTextColor={COLORS.dicBlack4}
+              cursorColor={COLORS.dicBlue}
+              ref={inputRef}
+              onLayout={() => inputRef.current.focus()}
+            />
+            <TouchableOpacity
+              style={[
+                globalStyle.buttonMain,
+                styles.button,
+                { marginBottom: 20 },
+              ]}
+              mode="contained"
+              onPress={() => handleOnSubmit()}
+            >
+              <Text style={{ color: COLORS.dicWhite }}>Create</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                globalStyle.buttonSub,
+                styles.button,
+                { backgroundColor: COLORS.dicBlack3 },
+              ]}
+              mode="contained"
+              onPress={() => {
+                navigation.goBack();
+                Keyboard.dismiss();
+              }}
+            >
+              <Text style={{ color: COLORS.dicWhite }}>Close</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Animated.View>
     </View>
@@ -135,18 +163,18 @@ const styles = StyleSheet.create({
   viewContainer: {
     flex: 1,
     padding: 10,
-    backgroundColor: COLORS.dicWhite,
-    borderRadius: 20,
+    backgroundColor: COLORS.dicBlack2,
+    borderRadius: 30,
   },
   text: {
     fontSize: 25,
     textAlignVertical: "center",
-    color: COLORS.dicBlack1,
+    color: COLORS.dicWhite,
     marginVertical: 30,
   },
   button: {
-    alignSelf: 'center',
-    width: '100%'
-  }
+    alignSelf: "center",
+    width: "100%",
+  },
 });
 export default CreateVocabList;

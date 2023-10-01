@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.dicBlue,
-    width: 80,
-    height: 80,
-    borderRadius: 15,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
     alignItems: "center",
     justifyContent: 'center',
     marginTop: 100
