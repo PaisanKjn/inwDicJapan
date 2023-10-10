@@ -15,8 +15,8 @@ const Register = ({ route, navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [users, setUsers] = useState([]);
-  const dis = (username == '' || password == '')? true: false;
+  const [users, setUsers] = useState([]); // won't be used
+  const dis = username == "" || password == "" ? true : false;
   const user = {
     username: username,
     password: password,
@@ -25,7 +25,7 @@ const Register = ({ route, navigation }) => {
 
   /* For now logging*/
   useEffect(() => {
-    findUsers();
+    findUsers(); // will use this method for fetching user instead
   }, []);
 
   /*store current user*/
@@ -42,8 +42,10 @@ const Register = ({ route, navigation }) => {
   /* register/store users in the DB */
   const handleSubmit = async () => {
     try {
-      // check if every field is filled NOT DONE YET
-
+      // 1. Check Password/PasswordConfirm
+      // 2. Fetch username if it exists
+      // 3. check if password == username
+      // 4. Save to DB & Store in async
       if (password === passwordCheck) {
         if (isAlreadyExisted()) {
           alert("This username is already existed");
@@ -62,6 +64,18 @@ const Register = ({ route, navigation }) => {
     } catch (e) {
       console.log(e);
     }
+
+    // fetch("https://mywebsite.com/endpoint/", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     username: username,
+    //     password: password,
+    //   }),
+    // });
   };
 
   const isAlreadyExisted = () => {
@@ -84,6 +98,15 @@ const Register = ({ route, navigation }) => {
     } catch (e) {
       console.log(e);
     }
+
+    // return fetch('')
+    // .then(response => response.json())
+    // .then(json => {
+    //   return json.user;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
   };
 
   return (
@@ -118,11 +141,11 @@ const Register = ({ route, navigation }) => {
       {/* Button Container */}
       <View>
         <TouchableOpacity
-          style={[Global.buttonMain, {marginVertical: 10}]}
+          style={[Global.buttonMain, { marginVertical: 10 }]}
           onPress={() => {
             handleSubmit();
           }}
-          disabled = {dis}
+          disabled={dis}
         >
           <Text style={Global.textButton}>Submit</Text>
         </TouchableOpacity>

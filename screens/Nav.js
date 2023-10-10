@@ -11,6 +11,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./Home";
 import VocabList from "./VocabList";
 import {
+  View,
   Pressable,
   Text,
   Image,
@@ -26,6 +27,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 import CreateVocabList from "./createVocabList";
 import Redirect from "./Redirect";
 import SelectDifficulty from "./SelectDifficulty";
@@ -101,13 +103,14 @@ const Nav = ({route}) => {
   function CustomDrawerContent(props) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {/*Top Image */}
-        <Image
-          source={{
-            uri: "https://reactnative.dev/img/tiny_logo.png",
-          }}
-          style={styles.sideMenuProfileIcon}
-        />
+        {/*Top Icon */}
+        <View style = {{margin: 10, alignItems: 'flex-end'}}>
+          
+          <FontAwesome name="chevron-left" size={30} color= {COLORS.dicBlack4} />
+    
+       
+        </View>
+       
 
         <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />

@@ -3,18 +3,18 @@ import { View, StyleSheet, Text } from "react-native";
 import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 
-const Timer = ({navigation}) => {
+const Timer = ({navigation, route}) => {
   const [time, setTime] = useState(3);
 
   useEffect(() => {
     let interval = null;
 
-    if (time > -1) {
+    if (time > 0) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
     } else {
-      navigation.replace('quiz')
+      navigation.replace('quiz', {difficulty: route.params.difficulty})
     }
 
     return () => {

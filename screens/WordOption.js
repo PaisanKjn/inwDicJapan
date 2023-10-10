@@ -6,18 +6,38 @@ import { useWindowDimensions } from "react-native";
 import { useCardAnimation } from "@react-navigation/stack";
 import { FontAwesome } from "@expo/vector-icons";
 
-const WordOption = () => {
+const WordOption = ({navigation}) => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
 
+  const handleCancel = () => {
+    
+  };
+
+  const handleRemove = () => {
+    // The user has pressed the "Delete" button, so here you can do your own logic.
+    // ...Your logic
+    // return fetch('')
+    // .then(response => response.json())
+    // .then(json => {
+    //   return json.user;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+    alert('The word has been removed');
+    navigation.goBack();
+   
+  };
+
   const confirmRemove = () => {
-    Alert.alert("Remove the list?", "Are you sure to remove your list?", [
+    Alert.alert("Remove the word?", "Are you sure to remove the word from the list?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
+        onPress: () =>handleCancel(),
         style: "cancel",
       },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
+      { text: "OK", onPress: () => handleRemove() },
     ]);
   };
 

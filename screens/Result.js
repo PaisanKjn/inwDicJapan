@@ -8,12 +8,18 @@ import {
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { Audio } from "expo-av";
 import { useState } from "react";
+import Global from "../styles/Global";
+import { COLORS } from "../styles/COLORS";
+import SeparateLine from "../components/SeparateLine";
+import { useEffect } from "react";
 
 const Result = ({ navigation, route }) => {
   const { searchQuery } = route.params;
   const [sound, setSound] = useState(null);
+  //const [result, setResult] = useState();
   const result = [
     {
       vocab: "来ます",
@@ -56,10 +62,38 @@ const Result = ({ navigation, route }) => {
     },
   ];
 
+  useEffect(() => {
+   // fetchWord();
+  })
+
+  const fetchWord = () => {
+    var url = ''
+    fetch(url + searchQuery)
+    .then(response => response.json())
+    .then(json => {
+      //setResult(json);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  const separator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "90%",
+          backgroundColor: COLORS.dicBlack3,
+          alignSelf: "center",
+        }}
+      />
+    );
+  };
   const ItemView = ({ item }) => {
     return (
       //FlatList Item
-      <View style={{ padding: 10, marginBottom: 20 }}>
+      <View style={{ marginVertical: 20 }}>
         <View
           style={{
             flexDirection: "row",
@@ -71,13 +105,13 @@ const Result = ({ navigation, route }) => {
             <Text
               style={{
                 fontSize: 32,
-                color: "#fff",
+                color: COLORS.dicWhite,
               }}
             >
               {item.vocab}
             </Text>
             {item.vocab != item.hiragana ? (
-              <Text style={{ color: "#888", fontSize: 15 }}>
+              <Text style={{ color: COLORS.dicBlack4, fontSize: 15 }}>
                 {item.hiragana}
               </Text>
             ) : (
@@ -90,7 +124,7 @@ const Result = ({ navigation, route }) => {
               style={styles.button}
               onPress={() => handleOnAdd(item)}
             >
-              <AntDesign name="plus" size={35} color="white" />
+              <AntDesign name="plus" size={35} color={COLORS.dicWhite} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
@@ -98,23 +132,34 @@ const Result = ({ navigation, route }) => {
                 playSound(item.vocab);
               }}
             >
-              <Ionicons name="volume-medium" size={35} color="white" />
+              <Ionicons
+                name="volume-medium"
+                size={35}
+                color={COLORS.dicWhite}
+              />
             </TouchableOpacity>
           </View>
         </View>
 
-        <Text style={{ color: "#fff", fontSize: 15, marginTop: 10 }}>
+        <Text style={{ color: COLORS.dicWhite, fontSize: 24, marginTop: 10 }}>
+          {item.meaning}
+        </Text>
+        <Text style={{ color: COLORS.dicBlack4, fontSize: 15 }}>
           {item.type}
         </Text>
 
         {item.forms.dict ? (
           <>
-            <Text style={{ color: "#fff", fontSize: 22 }}>
+            <Text style={{ color: COLORS.dicWhite, fontSize: 22 }}>
               {item.forms.dict}
             </Text>
-            <Text style={{ color: "#fff", fontSize: 22 }}>{item.forms.te}</Text>
-            <Text style={{ color: "#fff", fontSize: 22 }}>{item.forms.ta}</Text>
-            <Text style={{ color: "#fff", fontSize: 22 }}>
+            <Text style={{ color: COLORS.dicWhite, fontSize: 22 }}>
+              {item.forms.te}
+            </Text>
+            <Text style={{ color: COLORS.dicWhite, fontSize: 22 }}>
+              {item.forms.ta}
+            </Text>
+            <Text style={{ color: COLORS.dicWhite, fontSize: 22 }}>
               {item.forms.nai}
             </Text>
           </>
@@ -149,33 +194,33 @@ const Result = ({ navigation, route }) => {
       alert("You need an account to use this feature");
     } else {
       navigation.navigate("VocabList", { item: item });
-    } 
+    }
   };
 
   return (
-    <View style={[{ backgroundColor: "#0e0e0e", flex: 1 }]}>
+    <View style={Global.container}>
       <Text style={[styles.head]}>{searchQuery}</Text>
-      <View
-        style={{
-          height: 0.5,
-          width: 240,
-          marginTop: 10,
-          marginLeft: 20,
-          backgroundColor: "#3C687A",
-        }}
-      ></View>
+      <SeparateLine />
       <View style={[styles.container]}>
         {result != null ? (
           <>
             <FlatList
               data={result}
               renderItem={ItemView}
+              ItemSeparatorComponent={separator}
               keyExtractor={(item) => item.meaning.toString()}
             />
           </>
         ) : (
           <>
-          <Text>Result Not Found</Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Entypo
+                name="magnifying-glass"
+                size={90}
+                color={COLORS.dicBlack4}
+              />
+              <Text style={styles.disabledText}>Result Not Found</Text>
+            </View>
           </>
         )}
       </View>
@@ -189,22 +234,26 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     flex: 1,
-    margin: 10,
   },
   head: {
     color: "white",
     fontSize: 40,
     marginTop: 20,
-    marginLeft: 20,
+
     textAlign: "left",
   },
   button: {
     height: 55,
     width: 55,
-    backgroundColor: "#3C687A",
-    borderRadius: 20,
+    backgroundColor: COLORS.dicBlue,
+    borderRadius: 100,
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 15,
+  },
+  disabledText: {
+    fontSize: 15,
+    color: COLORS.dicBlack4,
+    marginVertical: 25,
   },
 });

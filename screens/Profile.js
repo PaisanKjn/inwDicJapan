@@ -6,6 +6,8 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { COLORS } from "../styles/COLORS";
 import Global from "../styles/Global";
+//import ReactNativeBlobUtil from 'react-native-blob-util'
+
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -21,7 +23,7 @@ const Profile = ({ navigation, route }) => {
   const [img, setImg] = useState("https://reactnative.dev/img/tiny_logo.png");
 
   useEffect(() => {
-    loadImages();
+    //loadImages();
   }, []);
 
   const loadImages = async () => {
@@ -32,21 +34,17 @@ const Profile = ({ navigation, route }) => {
     }
   };
 
-  const selectImage = async (useLibrary) => {
+  const selectImage = async () => {
     let result;
 
-    const options = (ImagePicker.MediaTypeOptions = {
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    const options = {
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [1, 1],
-    });
+      quality: 1,
+    };
 
-    if (useLibrary) {
-      result = await ImagePicker.launchImageLibraryAsync(options);
-    } else {
-      await ImagePicker.requestCameraPermissionsAsync();
-      result = await ImagePicker.launchImageLibraryAsync(options);
-    }
+    result = await ImagePicker.launchImageLibraryAsync(options);
 
     if (!result.canceled) {
       console.log(result.assets[0].uri);
@@ -59,14 +57,17 @@ const Profile = ({ navigation, route }) => {
     const filename = new Date().getTime() + ".jpg";
     const dest = imgDir + filename;
     await FileSystem.copyAsync({ from: uri, to: dest });
-    setImg(dest);
-    await route.params.setImage(dest);
+    
+    setImg(uri);
+    await route.params?.setImage(uri);
+    
+    
+    console.log();
     saveToDB();
   };
 
   const saveToDB = async () => {
     // sth sth database
-    
   };
 
   const handleOnLogOut = async () => {
@@ -96,10 +97,7 @@ const Profile = ({ navigation, route }) => {
       </View>
 
       <View style={{ alignItems: "flex-end" }}>
-        <TouchableOpacity
-          style={Global.buttonSub}
-          onPress={handleOnLogOut}
-        >
+        <TouchableOpacity style={Global.buttonSub} onPress={handleOnLogOut}>
           <Text style={Global.textButton}>Log out</Text>
         </TouchableOpacity>
       </View>
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.dicBlack2,
     borderRadius: 18,
-    marginVertical: 20
+    marginVertical: 20,
   },
   circle: {
     backgroundColor: COLORS.dicBlack3,

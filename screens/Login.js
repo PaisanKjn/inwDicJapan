@@ -21,7 +21,6 @@ const Login = ({ navigation, route }) => {
   /* For now logging*/
   useEffect(() => {
     findUsers();
-    console.log("Render");
   }, []);
 
   /*store current user*/
@@ -38,8 +37,10 @@ const Login = ({ navigation, route }) => {
   /* register/store users in the DB */
   const handleSubmit = () => {
     try {
-      // check if every field is filled NOT DONE YET
-      isAlreadyExisted();
+      // 1. Fetch username if it exists
+      // 2. check if password == username
+      // 3. Store in async
+      isAlreadyExisted(); // will use findUser instead
     } catch (e) {
       console.log(e);
     }
@@ -81,6 +82,15 @@ const Login = ({ navigation, route }) => {
     } catch (e) {
       console.log(e);
     }
+
+    // return fetch('')
+    // .then(response => response.json())
+    // .then(json => {
+    //   return json.user;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
   };
 
   return (

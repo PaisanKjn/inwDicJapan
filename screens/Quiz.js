@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import Animated, { runOnJS } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import {
   useSharedValue,
   withTiming,
@@ -45,28 +45,52 @@ const wordlist = [
     meaning: "ตื่น",
     jlpt: "N5",
   },
+  {
+    vocab: "奪う",
+    hiragana: "うばう",
+    type: "คำกริยา (Verb)",
+    meaning: "ขโมย",
+    jlpt: "N3",
+  },
 ];
-const Quiz = ({navigation}) => {
+const Quiz = ({ navigation, route }) => {
   const [listItems, setListItems] = useState(wordlist);
+  const [choice, setChoice] = useState();
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState(7);
   const [isAnswered, setIsAnswered] = useState(null);
   const [answer, setAnswer] = useState(null);
   const [score, setScore] = useState(0);
   const { height, width } = useWindowDimensions();
-  const [word, setWord] = useState(wordlist[Math.floor(Math.random() * 4)].vocab);
+  const [word, setWord] = useState(wordlist[0].vocab); // current word(answer) for the problem, use index instead
   let interval = null;
   const animation = useSharedValue({ width: width });
+
+  useEffect(() => {
+    if (route.params?.repeatList == null) {
+      console.log("fetch");
+      // fetch command i guess
+      // fetch(url + searchQuery)
+      //   .then((response) => response.json())
+      //   .then((json) => {
+      //     //setResult(json);
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+    } else {
+      console.log("Set the repeat list");
+    }
+  }, []);
 
   // If answer/timeout -> set answer
   useEffect(() => {
     if (isAnswered) {
       if (answer == word) {
         setScore((score) => score + 1);
-      }
-      else {
+      } else {
         setTimeout(() => {
-         navigation.replace('score', {score: score})
+          navigation.replace("score", { score: score });
         }, 3000);
       }
       setTime(0);
@@ -77,6 +101,12 @@ const Quiz = ({navigation}) => {
   useEffect(() => {
     setIsAnswered(null);
     setAnswer(null);
+    if (index < listItems.length) {
+      setWord(wordlist[index].vocab);
+      getRandomChoice(index);
+    } else {
+      navigation.replace("score", { score: score });
+    }
   }, [index]);
 
   // the main countdown, if answered > set cooldown to 3 secs
@@ -86,16 +116,12 @@ const Quiz = ({navigation}) => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
       animation.value = { width: 0 };
-      console.log(animation.value.width)
     } else {
       setIsAnswered(true);
       setTimeout(() => {
         setIndex((index) => index + 1);
-        setWord(wordlist[Math.floor(Math.random() * 4)].vocab)
-       
       }, 3000);
       animation.value = { width: width };
-      console.log(animation.value.width)
     }
 
     return () => {
@@ -105,11 +131,30 @@ const Quiz = ({navigation}) => {
 
   // set countdown time
   useEffect(() => {
+    console.log("Index: " + index);
+
     if (!interval) {
       setTime(7);
     }
   }, [index]);
 
+  const getRandomChoice = (index) => {
+    console.log("Index used: " + index);
+    const arrNoAnswer = JSON.parse(JSON.stringify(listItems));
+    arrNoAnswer.splice(index, 1);
+    let arr = arrNoAnswer
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    const choiceList = [listItems[index], arr[0], arr[1], arr[2]]
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    setChoice(choiceList);
+    //console.log(choice);
+  };
 
   const ItemView = ({ item }) => {
     return (
@@ -118,21 +163,23 @@ const Quiz = ({navigation}) => {
         style={[
           styles.item,
           {
-            backgroundColor: !isAnswered?
-            COLORS.dicBlack2
-            : item.vocab == word?
-            COLORS.dicGreen
-              : answer == null?
-              COLORS.dicBlack2
-                : answer == item.vocab?
-                COLORS.dicRed
-                  : COLORS.dicBlack2
+            backgroundColor: !isAnswered
+              ? COLORS.dicBlack2
+              : item.vocab == word
+              ? COLORS.dicGreen
+              : answer == null
+              ? COLORS.dicBlack2
+              : answer == item.vocab
+              ? COLORS.dicRed
+              : COLORS.dicBlack2,
           },
         ]}
         onPress={() => getAnswer(item)}
         disabled={isAnswered ? true : false}
       >
-        <Text style={{ color: COLORS.dicBlack5, fontSize: 20 }}>{item.meaning}</Text>
+        <Text style={{ color: COLORS.dicBlack5, fontSize: 20 }}>
+          {item.meaning}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -146,7 +193,7 @@ const Quiz = ({navigation}) => {
   const reducedWidth = useAnimatedStyle(() => {
     return {
       width: withTiming(animation.value.width, {
-        duration: !isAnswered?7000:1000,
+        duration: !isAnswered ? 7000 : 1000,
       }),
     };
   });
@@ -161,26 +208,17 @@ const Quiz = ({navigation}) => {
   });
 
   return (
-    
     <View style={[{ backgroundColor: COLORS.dicBlack1, flex: 1 }]}>
       {/* timer bar */}
       <Animated.View
-        style={[
-          reducedWidth,
-          { backgroundColor: COLORS.dicWhite, height: 15 },
-        ]}
+        style={[reducedWidth, { backgroundColor: COLORS.dicWhite, height: 15 }]}
       >
         <Text>{time}</Text>
       </Animated.View>
       <Text style={[styles.question]}>{word}</Text>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={[styles.container]}>
-          <FlatList
-            numColumns={2}
-            data={listItems}
-            renderItem={ItemView}
-            keyExtractor={(item) => item.meaning.toString()}
-          />
+          <FlatList numColumns={2} data={choice} renderItem={ItemView} />
         </View>
       </SafeAreaView>
     </View>

@@ -13,35 +13,38 @@ import { useWindowDimensions } from "react-native";
 import { useCardAnimation } from "@react-navigation/stack";
 import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
-import Dialog from "react-native-dialog";
 
-const ListOption = () => {
+
+const ListOption = ({navigation}) => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
-  const [visible, setVisible] = useState(false);
-
-  const showDialog = () => {
-    setVisible(true);
-  };
 
   const handleCancel = () => {
-    setVisible(false);
   };
 
-  const handleConfirm = () => {
+  const handleRemove = () => {
     // The user has pressed the "Delete" button, so here you can do your own logic.
     // ...Your logic
-    setVisible(false);
+    // return fetch('')
+    // .then(response => response.json())
+    // .then(json => {
+    //   return json.user;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+    alert('Vocab list has been deleted');
+    navigation.goBack();
   };
 
   const confirmRemove = () => {
     Alert.alert("Remove the list?", "Are you sure to remove your list?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
+        onPress: () => handleCancel(),
         style: "cancel",
       },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
+      { text: "OK", onPress: () => handleRemove() },
     ]);
   };
 
@@ -89,38 +92,9 @@ const ListOption = () => {
                 { marginLeft: 40, color: COLORS.dicBlack5, fontSize: 18 },
               ]}
             >
-              Remove from the vocab list
+              Remove the vocab list
             </Text>
           </Pressable>
-
-          <Pressable
-            style={{ flexDirection: "row", padding: 20 }}
-            android_ripple={{ foreground: true, color: COLORS.dicBlack3}}
-            onPress={showDialog}
-          >
-            <MaterialCommunityIcons
-              name="pencil-outline"
-              size={30}
-              color={COLORS.dicBlack4}
-            />
-            <Text
-              style={[
-                Global.h3,
-                { marginLeft: 33, color: COLORS.dicBlack5, fontSize: 18 },
-              ]}
-            >
-              Remove from the vocab list
-            </Text>
-          </Pressable>
-          <Dialog.Container visible={visible}>
-            <Dialog.Title>Account delete</Dialog.Title>
-            <Dialog.Description>
-              Do you want to delete this account? You cannot undo this action.
-            </Dialog.Description>
-            <Dialog.Input />
-            <Dialog.Button label="Cancel" onPress={handleCancel} />
-            <Dialog.Button label="Confirm" onPress={handleConfirm} />
-          </Dialog.Container>
         </View>
       </Animated.View>
     </View>

@@ -34,13 +34,23 @@ const CreateVocabList = ({ navigation, route }) => {
   }, []);
 
   const handleOnSubmit = () => {
+    // 1. fetch to see if the list already exists
+    // 2. if not, save to DB using user ID
+    // 3. navigate back
     if (isAlreadyExisted()) {
       alert("That name is already existed");
     } else {
       handleSubmit();
     }
 
-    //AsyncStorage.removeItem('vocabLists')
+     // return fetch('')
+    // .then(response => response.json())
+    // .then(json => {
+    //   return json.user;
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
   };
 
   const handleSubmit = async () => {
