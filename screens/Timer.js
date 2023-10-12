@@ -5,6 +5,7 @@ import { COLORS } from "../styles/COLORS";
 
 const Timer = ({navigation, route}) => {
   const [time, setTime] = useState(3);
+  const [quizItem, setQuizItem] = useState();
 
   useEffect(() => {
     let interval = null;
@@ -14,13 +15,29 @@ const Timer = ({navigation, route}) => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
     } else {
-      navigation.replace('quiz', {difficulty: route.params.difficulty})
+      navigation.replace('quiz', {difficulty: route.params.difficulty, quizItem: quizItem})
     }
 
     return () => {
       clearInterval(interval);
     };
   }, [time]);
+
+  useEffect(() => {
+    fetchWord();
+  }, [])
+
+  const fetchWord = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/wordlist?jlpt=N' + route.params.difficulty + '&row=10')
+     const data = await response.json();
+     setQuizItem(data)
+
+    } catch(err) {
+      console.error("Error fecthing users: ", err);
+    }
+    
+  }
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
