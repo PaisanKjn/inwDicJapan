@@ -19,63 +19,62 @@ import { useEffect } from "react";
 const Result = ({ navigation, route }) => {
   const { searchQuery } = route.params;
   const [sound, setSound] = useState(null);
-  //const [result, setResult] = useState();
-  const result = [
-    {
-      vocab: "来ます",
-      hiragana: "きます",
-      type: "คำกริยา (Verb 3)",
-      forms: {
-        dict: "くる",
-        ta: "きた",
-        te: "きて",
-        nai: "こない",
-      },
-      meaning: "มา",
-      jlpt: "N5",
-    },
-    {
-      vocab: "きます",
-      hiragana: "きます",
-      type: "คำกริยา (Verb 2)",
-      forms: {
-        dict: "きる",
-        ta: "きた",
-        te: "きて",
-        nai: "きない",
-      },
-      meaning: "ใส่ (เสื้อผ้า)",
-      jlpt: "N5",
-    },
-    {
-      vocab: "きれい",
-      hiragana: "きれい",
-      type: "คำคุณศัพท์ na",
-      forms: {
-        dict: "",
-        ta: "",
-        te: "",
-        nai: "",
-      },
-      meaning: "สวย, สะอาด",
-      jlpt: "N5",
-    },
-  ];
+  const [result, setResult] = useState();
+  // const result = [
+  //   {
+  //     vocab: "来ます",
+  //     hiragana: "きます",
+  //     type: "คำกริยา (Verb 3)",
+  //     forms: {
+  //       dict: "くる",
+  //       ta: "きた",
+  //       te: "きて",
+  //       nai: "こない",
+  //     },
+  //     meaning: "มา",
+  //     jlpt: "N5",
+  //   },
+  //   {
+  //     vocab: "きます",
+  //     hiragana: "きます",
+  //     type: "คำกริยา (Verb 2)",
+  //     forms: {
+  //       dict: "きる",
+  //       ta: "きた",
+  //       te: "きて",
+  //       nai: "きない",
+  //     },
+  //     meaning: "ใส่ (เสื้อผ้า)",
+  //     jlpt: "N5",
+  //   },
+  //   {
+  //     vocab: "きれい",
+  //     hiragana: "きれい",
+  //     type: "คำคุณศัพท์ na",
+  //     forms: {
+  //       dict: "",
+  //       ta: "",
+  //       te: "",
+  //       nai: "",
+  //     },
+  //     meaning: "สวย, สะอาด",
+  //     jlpt: "N5",
+  //   },
+  // ];
 
   useEffect(() => {
-   // fetchWord();
-  })
+   fetchWord();
+  }, [])
 
-  const fetchWord = () => {
-    var url = ''
-    fetch(url + searchQuery)
-    .then(response => response.json())
-    .then(json => {
-      //setResult(json);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  const fetchWord = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/?vocab=' + searchQuery)
+      const data = await response.json();
+      setResult(data);
+    } catch(err) {
+      console.log('Error fetching results', err)
+    }
+   
   }
 
   const separator = () => {
@@ -219,7 +218,7 @@ const Result = ({ navigation, route }) => {
                 size={90}
                 color={COLORS.dicBlack4}
               />
-              <Text style={styles.disabledText}>Result Not Found</Text>
+              <Text style={styles.disabledText}>Cannot find any matching words</Text>
             </View>
           </>
         )}

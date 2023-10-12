@@ -104,11 +104,8 @@ const Nav = ({route}) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {/*Top Icon */}
-        <View style = {{margin: 10, alignItems: 'flex-end'}}>
-          
+        <View style = {{margin: 10, alignItems: 'flex-end'}}>   
           <FontAwesome name="chevron-left" size={30} color= {COLORS.dicBlack4} />
-    
-       
         </View>
        
 
