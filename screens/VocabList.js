@@ -79,10 +79,6 @@ const VocabList = ({ navigation, route }) => {
     });
   };
 
-  const handleOnDelete = (listName) => {
-    alert(listName + " deleted");
-  };
-
   // Current "setList" data is imported (needs to be changed)
   return (
     <View style={[styles.container]}>

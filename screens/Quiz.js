@@ -16,45 +16,46 @@ import {
 } from "react-native-reanimated";
 import { COLORS } from "../styles/COLORS";
 
-const wordlist = [
-  {
-    vocab: "食べる",
-    hiragana: "たべある",
-    type: "คำกริยา (Verb)",
-    meaning: "กิน",
-    jlpt: "N5",
-  },
-  {
-    vocab: "寝る",
-    hiragana: "ねる",
-    type: "คำกริยา (Verb)",
-    meaning: "นอน",
-    jlpt: "N5",
-  },
-  {
-    vocab: "分かる",
-    hiragana: "分かる",
-    type: "คำกริยา (Verb)",
-    meaning: "เข้าใจ",
-    jlpt: "N5",
-  },
-  {
-    vocab: "起きる",
-    hiragana: "おきる",
-    type: "คำกริยา (Verb)",
-    meaning: "ตื่น",
-    jlpt: "N5",
-  },
-  {
-    vocab: "奪う",
-    hiragana: "うばう",
-    type: "คำกริยา (Verb)",
-    meaning: "ขโมย",
-    jlpt: "N3",
-  },
-];
+// const wordlist = [
+//   {
+//     vocab: "食べる",
+//     hiragana: "たべある",
+//     type: "คำกริยา (Verb)",
+//     meaning: "กิน",
+//     jlpt: "N5",
+//   },
+//   {
+//     vocab: "寝る",
+//     hiragana: "ねる",
+//     type: "คำกริยา (Verb)",
+//     meaning: "นอน",
+//     jlpt: "N5",
+//   },
+//   {
+//     vocab: "分かる",
+//     hiragana: "分かる",
+//     type: "คำกริยา (Verb)",
+//     meaning: "เข้าใจ",
+//     jlpt: "N5",
+//   },
+//   {
+//     vocab: "起きる",
+//     hiragana: "おきる",
+//     type: "คำกริยา (Verb)",
+//     meaning: "ตื่น",
+//     jlpt: "N5",
+//   },
+//   {
+//     vocab: "奪う",
+//     hiragana: "うばう",
+//     type: "คำกริยา (Verb)",
+//     meaning: "ขโมย",
+//     jlpt: "N3",
+//   },
+// ];
+
 const Quiz = ({ navigation, route }) => {
-  const [listItems, setListItems] = useState(wordlist);
+  const [listItems, setListItems] = useState([]);
   const [choice, setChoice] = useState();
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState(7);
@@ -62,22 +63,29 @@ const Quiz = ({ navigation, route }) => {
   const [answer, setAnswer] = useState(null);
   const [score, setScore] = useState(0);
   const { height, width } = useWindowDimensions();
-  const [word, setWord] = useState(wordlist[0].vocab); // current word(answer) for the problem, use index instead
+  const [word, setWord] = useState(); // current word(answer) for the problem, use index instead
+  const [loading, setLoading] = useState(true);
   let interval = null;
   const animation = useSharedValue({ width: width });
+
+  const fetchWord = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/wordlist?jlpt=N' + route.params?.difficulty + '&row=10')
+     const data = await response.json();
+     setListItems(data)
+     setWord(listItems[0].vocab)
+     setLoading(false)
+
+    } catch(err) {
+      console.error("Error fecthing users: ", err);
+    }
+    
+  }
 
   useEffect(() => {
     if (route.params?.repeatList == null) {
       console.log("fetch");
-      // fetch command i guess
-      // fetch(url + searchQuery)
-      //   .then((response) => response.json())
-      //   .then((json) => {
-      //     //setResult(json);
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
+      fetchWord();
     } else {
       console.log("Set the repeat list");
     }
@@ -90,7 +98,7 @@ const Quiz = ({ navigation, route }) => {
         setScore((score) => score + 1);
       } else {
         setTimeout(() => {
-          navigation.replace("score", { score: score });
+          navigation.replace("score", { score: score, difficulty: route.params.difficulty });
         }, 3000);
       }
       setTime(0);
@@ -99,14 +107,17 @@ const Quiz = ({ navigation, route }) => {
 
   // if the question change > reset isAnswer and answer
   useEffect(() => {
-    setIsAnswered(null);
-    setAnswer(null);
-    if (index < listItems.length) {
-      setWord(wordlist[index].vocab);
-      getRandomChoice(index);
-    } else {
-      navigation.replace("score", { score: score });
+    if(!loading) {
+      setIsAnswered(null);
+      setAnswer(null);
+      if (index < listItems.length) {
+        setWord(listItems[index].vocab);
+        getRandomChoice(index);
+      } else {
+        navigation.replace("score", { score: score, difficulty: route.params.difficulty });
+      } 
     }
+   
   }, [index]);
 
   // the main countdown, if answered > set cooldown to 3 secs

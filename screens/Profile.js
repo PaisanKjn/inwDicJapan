@@ -24,6 +24,7 @@ const Profile = ({ navigation, route }) => {
 
   useEffect(() => {
     //loadImages();
+    // fetchUser()
   }, []);
 
   const loadImages = async () => {
@@ -33,6 +34,10 @@ const Profile = ({ navigation, route }) => {
       setImg(files.map((f) => imgDir + f));
     }
   };
+
+  const fetchUser = () => {
+
+  }
 
   const selectImage = async () => {
     let result;
