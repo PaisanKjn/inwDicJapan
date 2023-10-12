@@ -55,7 +55,7 @@ import { COLORS } from "../styles/COLORS";
 // ];
 
 const Quiz = ({ navigation, route }) => {
-  const [listItems, setListItems] = useState([]);
+  const [listItems, setListItems] = useState(route.params.quizItem);
   const [choice, setChoice] = useState();
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState(7);
@@ -64,32 +64,10 @@ const Quiz = ({ navigation, route }) => {
   const [score, setScore] = useState(0);
   const { height, width } = useWindowDimensions();
   const [word, setWord] = useState(); // current word(answer) for the problem, use index instead
-  const [loading, setLoading] = useState(true);
   let interval = null;
   const animation = useSharedValue({ width: width });
 
-  const fetchWord = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/wordlist?jlpt=N' + route.params?.difficulty + '&row=10')
-     const data = await response.json();
-     setListItems(data)
-     setWord(listItems[0].vocab)
-     setLoading(false)
 
-    } catch(err) {
-      console.error("Error fecthing users: ", err);
-    }
-    
-  }
-
-  useEffect(() => {
-    if (route.params?.repeatList == null) {
-      console.log("fetch");
-      fetchWord();
-    } else {
-      console.log("Set the repeat list");
-    }
-  }, []);
 
   // If answer/timeout -> set answer
   useEffect(() => {
@@ -107,7 +85,7 @@ const Quiz = ({ navigation, route }) => {
 
   // if the question change > reset isAnswer and answer
   useEffect(() => {
-    if(!loading) {
+    
       setIsAnswered(null);
       setAnswer(null);
       if (index < listItems.length) {
@@ -116,7 +94,7 @@ const Quiz = ({ navigation, route }) => {
       } else {
         navigation.replace("score", { score: score, difficulty: route.params.difficulty });
       } 
-    }
+
    
   }, [index]);
 
