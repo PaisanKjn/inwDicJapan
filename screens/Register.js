@@ -15,21 +15,90 @@ const Register = ({ route, navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
-  const [users, setUsers] = useState([]); // won't be used
   const dis = username == "" || password == "" ? true : false;
   const user = {
     username: username,
     password: password,
-    profilePic: "",
   };
+
+  
 
   /* For now logging*/
   useEffect(() => {
-    findUsers(); // will use this method for fetching user instead
+    // findUsers(); will use this method for fetching user instead
   }, []);
 
-  /*store current user*/
-  const storeAppUser = async () => {
+  /* register/store users in the DB */
+  const handleSubmit = async () => {
+    // 1. Check Password/PasswordConfirm
+    // 2. Fetch username if it exists
+    // 3. check if password == username
+    // 4. Save to DB & Store in async
+
+    if (passCheck()) {
+      if (!isAlreadyExisted) {
+        if (password != username) {
+          saveToDB();
+        } else {
+          alert("The password can't be your username")
+        }
+      } else {
+        alert('This username is already taken');
+      }
+    }
+  };
+
+  const passCheck = () => {
+    if(password != passwordCheck) {
+      alert("Your passwords don't match");
+      return(false);
+    }
+    if(password.trim().length < 8) {
+      alert("The password must be at least 8 characters")
+      return(false)
+    }
+    return(true);
+
+  }
+   const isAlreadyExisted = () => {
+    // Sendg a request to check if the user exists or not
+    try {
+      const response = fetch("http://localhost:8080/username?name=" + username)
+      return response
+    } catch (err) {
+      console.log("Error fetching user", err)
+    }
+   
+  };
+
+  const saveToDB = () => {
+    try {
+      fetch("http://localhost:8080/user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: username,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(JSON.stringify(responseData));
+      })
+      .done();
+
+      storeAppUser();
+    } catch (err) {
+      console.log('Error saving user to a database');
+    }
+    
+  };
+
+   /*store current user*/
+   const storeAppUser = async () => {
     try {
       await AsyncStorage.setItem("appUser", JSON.stringify(user));
       // alert("SAVED");
@@ -39,75 +108,6 @@ const Register = ({ route, navigation }) => {
     }
   };
 
-  /* register/store users in the DB */
-  const handleSubmit = async () => {
-    try {
-      // 1. Check Password/PasswordConfirm
-      // 2. Fetch username if it exists
-      // 3. check if password == username
-      // 4. Save to DB & Store in async
-      if (password === passwordCheck) {
-        if (isAlreadyExisted()) {
-          alert("This username is already existed");
-        } else {
-          const updatedUsers = [...users, user];
-          setUsers(updatedUsers);
-          await AsyncStorage.setItem("users", JSON.stringify(updatedUsers));
-          storeAppUser();
-          alert("User is saved! :3");
-          route.params.setUser(user);
-          navigation.navigate("Home");
-        }
-      } else {
-        alert("Passwords don't match");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-    // fetch("https://mywebsite.com/endpoint/", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     username: username,
-    //     password: password,
-    //   }),
-    // });
-  };
-
-  const isAlreadyExisted = () => {
-    const userResult = users.filter((users) => {
-      if (username === users.username) {
-        return users;
-      }
-    });
-    console.log(userResult);
-    return userResult.length > 0 ? true : false;
-  };
-
-  /* retrieving all users from DB so the users are in the const */
-  const findUsers = async () => {
-    try {
-      const result = await AsyncStorage.getItem("users");
-      console.log(result);
-      console.log("POOP");
-      if (result !== null) setUsers(JSON.parse(result));
-    } catch (e) {
-      console.log(e);
-    }
-
-    // return fetch('')
-    // .then(response => response.json())
-    // .then(json => {
-    //   return json.user;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-  };
 
   return (
     <View style={Global.container}>
