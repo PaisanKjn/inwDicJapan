@@ -29,17 +29,17 @@ const Login = ({ navigation, route }) => {
     checkPass(); // will use findUser instead
   };
 
-  const isAlreadyExisted = () => {
-    const userResult = users.filter((users) => {
-      if (username === users.username) {
-        return users;
-      }
-    });
-    console.log(userResult);
-    return userResult.length > 0
-      ? checkPass(userResult)
-      : alert("This username doesn't exist!");
-  };
+  // const isAlreadyExisted = () => {
+  //   const userResult = users.filter((users) => {
+  //     if (username === users.username) {
+  //       return users;
+  //     }
+  //   });
+  //   console.log(userResult);
+  //   return userResult.length > 0
+  //     ? checkPass(userResult)
+  //     : alert("This username doesn't exist!");
+  // };
 
   const checkPass = async (userResult) => {
     let url =
