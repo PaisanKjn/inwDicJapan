@@ -191,7 +191,7 @@ const Nav = ({route}) => {
         />
         <Drawer.Screen
           name="quizStack"
-          component={QuizStack}
+          component={QuizStack} // component = {user? QuizStack : Redirect}
           options={{
             title: "Quiz",
             drawerIcon: ({ focused, size }) => (

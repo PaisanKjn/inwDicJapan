@@ -6,7 +6,6 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
-import { PropsWithChildren } from "react";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Global from "../styles/Global";
@@ -15,13 +14,57 @@ import { COLORS } from "../styles/COLORS";
 const Login = ({ navigation, route }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
-  const dis = (username == '' || password == '')? true: false;
+  const dis = username == "" || password == "" ? true : false;
 
   /* For now logging*/
   useEffect(() => {
-    findUsers();
+    //findUsers();
   }, []);
+
+  /* register/store users in the DB */
+  const handleSubmit = () => {
+    // 1. Fetch username if it exists
+    // 2. check if password == username
+    // 3. Store in async
+    checkPass(); // will use findUser instead
+  };
+
+  // const isAlreadyExisted = () => {
+  //   const userResult = users.filter((users) => {
+  //     if (username === users.username) {
+  //       return users;
+  //     }
+  //   });
+  //   console.log(userResult);
+  //   return userResult.length > 0
+  //     ? checkPass(userResult)
+  //     : alert("This username doesn't exist!");
+  // };
+
+  const checkPass = async (userResult) => {
+    let url =
+      "http://localhost:8080/user?name=" + username + "&password=" + password;
+
+    try {
+      const response = fetch(url);
+      const data = response.json();
+
+      if (data.user.name == "") {
+        alert("Your username or password is incorrect");
+      } else {
+        const user = {username: data.user.name,
+                      password: data.user.password}
+        storeAppUser(user);
+        alert("Logged in!");
+        navigation.navigate("Drawer");
+        route.params.setUser(user);
+      }
+    } catch (err) {
+      console.log("Error logging user in");
+    }
+
+  };
+
 
   /*store current user*/
   const storeAppUser = async (user) => {
@@ -32,65 +75,6 @@ const Login = ({ navigation, route }) => {
       // saving error
       alert("ERROR SAVING");
     }
-  };
-
-  /* register/store users in the DB */
-  const handleSubmit = () => {
-    try {
-      // 1. Fetch username if it exists
-      // 2. check if password == username
-      // 3. Store in async
-      isAlreadyExisted(); // will use findUser instead
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const isAlreadyExisted = () => {
-    const userResult = users.filter((users) => {
-      if (username === users.username) {
-        return users;
-      }
-    });
-    console.log(userResult);
-    return userResult.length > 0
-      ? checkPass(userResult)
-      : alert("This username doesn't exist!");
-  };
-
-  const checkPass = async (userResult) => {
-    if (password !== userResult[0].password) {
-      alert("Password doesn't match");
-    } else {
-      await storeAppUser(userResult[0]);
-      console.log("Saved user is ");
-      console.log(userResult[0]);
-      alert("Logged in!");
-      //route.params.setLog(true);
-      navigation.navigate("Drawer");
-      route.params.setUser(userResult[0]);
-    }
-  };
-
-  /* retrieving all users from DB so the users are in the const */
-  const findUsers = async () => {
-    try {
-      const result = await AsyncStorage.getItem("users");
-      console.log(result);
-      console.log("POOP");
-      if (result !== null) setUsers(JSON.parse(result));
-    } catch (e) {
-      console.log(e);
-    }
-
-    // return fetch('')
-    // .then(response => response.json())
-    // .then(json => {
-    //   return json.user;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
   };
 
   return (
@@ -117,17 +101,17 @@ const Login = ({ navigation, route }) => {
       {/* Button container */}
       <View>
         <TouchableOpacity
-          style={[Global.buttonMain, {marginVertical: 10}]}
+          style={[Global.buttonMain, { marginVertical: 10 }]}
           onPress={() => {
             handleSubmit();
           }}
-          disabled = {dis}
+          disabled={dis}
         >
           <Text style={Global.textButton}>Login</Text>
         </TouchableOpacity>
-        <Text style={[Global.h3, {color: COLORS.dicBlack5}]}>Or</Text>
+        <Text style={[Global.h3, { color: COLORS.dicBlack5 }]}>Or</Text>
         <TouchableOpacity
-          style={[Global.buttonSub,  {marginVertical: 10}]}
+          style={[Global.buttonSub, { marginVertical: 10 }]}
           onPress={() => {
             navigation.navigate("Register");
           }}
@@ -142,7 +126,7 @@ const Login = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   inputContainer: {
     alignItems: "center",
-    marginTop: 20
+    marginTop: 20,
   },
 });
 

@@ -35,9 +35,6 @@ const Profile = ({ navigation, route }) => {
     }
   };
 
-  const fetchUser = () => {
-
-  }
 
   const selectImage = async () => {
     let result;
