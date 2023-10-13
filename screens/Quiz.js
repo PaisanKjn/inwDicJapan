@@ -67,18 +67,6 @@ const Quiz = ({ navigation, route }) => {
   let interval = null;
   const animation = useSharedValue({ width: width });
 
-<<<<<<< HEAD
-  const fetchWord = async () => {
-    try {
-     const response = await fetch('http://192.168.1.100:8080/wordlist?jlpt=N' + route.params.difficulty + '&row=10')
-     const data = await response.json();
-     console.log(data)
-     setListItems(data)
-     setWord(listItems[0].vocab)
-     setLoading(false)
-=======
->>>>>>> 7653b4800889fa62ce68ca8a723f17b527b6baa7
-
 
   // If answer/timeout -> set answer
   useEffect(() => {

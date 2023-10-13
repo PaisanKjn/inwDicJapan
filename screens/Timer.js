@@ -29,7 +29,7 @@ const Timer = ({navigation, route}) => {
 
   const fetchWord = async () => {
     try {
-      const response = await fetch('http://localhost:8080/wordlist?jlpt=N' + route.params.difficulty + '&row=10')
+      const response = await fetch('http://192.168.1.100:8080/wordlist?jlpt=N' + route.params.difficulty + '&row=10')
      const data = await response.json();
      setQuizItem(data)
 

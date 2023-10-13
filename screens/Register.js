@@ -35,10 +35,10 @@ const Register = ({ route, navigation }) => {
     // 3. check if password == username
     // 4. Save to DB & Store in async
 
-    if (passCheck()) {
-      if (!isAlreadyExisted) {
+    if (await passCheck()) {
+      if (!(await isAlreadyExisted())) {
         if (password != username) {
-          saveToDB();
+          await saveToDB();
         } else {
           alert("The password can't be your username")
         }
@@ -48,7 +48,7 @@ const Register = ({ route, navigation }) => {
     }
   };
 
-  const passCheck = () => {
+  const passCheck = async () => {
     if(password != passwordCheck) {
       alert("Your passwords don't match");
       return(false);
@@ -60,42 +60,47 @@ const Register = ({ route, navigation }) => {
     return(true);
 
   }
-   const isAlreadyExisted = () => {
+   const isAlreadyExisted = async() => {
     // Sendg a request to check if the user exists or not
     try {
-      const response = fetch("http://localhost:8080/username?name=" + username)
-      return response
+      const response = await fetch("http://192.168.1.100:8080/username?name=" + username)
+      const data = await response.json()
+      console.log("data is " + data)
+      return data
     } catch (err) {
       console.log("Error fetching user", err)
     }
    
   };
 
-  const saveToDB = () => {
+  const saveToDB = async () => {
+    console.log(username);
+    console.log(password);
+  
     try {
-      fetch("http://localhost:8080/user", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: username,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(JSON.stringify(responseData));
+      const formData = new FormData();
+      formData.append('name', username);
+      formData.append('password', password);
+  
+      await fetch("http://192.168.1.100:8080/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data", // Set content type to FormData
+        },
+        body: formData,
       })
-      .done();
-
-      storeAppUser();
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log(JSON.stringify(responseData));
+        })
+        .done();
+  
+      await storeAppUser();
     } catch (err) {
-      console.log('Error saving user to a database');
+      console.log('Error saving user to the database', err);
     }
-    
   };
+  
 
    /*store current user*/
    const storeAppUser = async () => {
