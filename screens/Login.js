@@ -43,7 +43,7 @@ const Login = ({ navigation, route }) => {
 
   const checkPass = async (userResult) => {
     let url =
-      "http://192.168.1.100:8080/user?name=" + username + "&password=" + password;
+      "http://192.168.1.100:8080/user?name=" + username + "&password="  + password;
 
     try {
       const response = await fetch(url);

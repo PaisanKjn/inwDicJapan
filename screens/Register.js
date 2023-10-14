@@ -82,7 +82,7 @@ const Register = ({ route, navigation }) => {
       formData.append('name', username);
       formData.append('password', password);
   
-      await fetch("http://192.168.1.100:8080/user", {
+      await fetch("http://192.168.1.100:8080/user",  {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data", // Set content type to FormData
