@@ -73,7 +73,7 @@ const config2 = {
 
 const Nav = ({route}) => {
   const [user, setUser] = useState();
-  const [image, setImage] = useState("https://reactnative.dev/img/tiny_logo.png")
+  const [image, setImage] = useState("../components/default.jpg")
 
   useEffect(() => {
     getAppUser();

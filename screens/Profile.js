@@ -20,7 +20,7 @@ const ensureDirExists = async () => {
 
 const Profile = ({ navigation, route }) => {
   const { user } = route.params;
-  const [img, setImg] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [img, setImg] = useState("../components/default.jpg");
 
   useEffect(() => {
     //loadImages();
