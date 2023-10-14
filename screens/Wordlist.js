@@ -65,7 +65,7 @@ const Wordlist = ({ route, navigation }) => {
   };
 
   const handleOnSpeak = () => {
-    if (wordList.length > 0) {
+    if (wordList != null) {
       handleSpeak();
     } else {
       alert("You don't have any vocab in your list yet!");
