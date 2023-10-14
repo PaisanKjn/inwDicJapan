@@ -153,9 +153,9 @@ const Nav = ({route}) => {
               }
             >
               <Image
-                source={{
-                  uri: image
-                }}
+                source={
+                  require(image)
+                }
                 style  = {styles.sideMenuProfileIcon}
               />
             </Pressable>

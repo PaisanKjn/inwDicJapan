@@ -87,9 +87,9 @@ const Profile = ({ navigation, route }) => {
           onPress={() => selectImage(true)}
         >
           <Image
-            source={{
-              uri: img,
-            }}
+            source={
+              require(img)
+            }
             style={[styles.circle, styles.pic]}
           />
         </TouchableOpacity>
