@@ -94,8 +94,13 @@ const Register = ({ route, navigation }) => {
           console.log(JSON.stringify(responseData));
         })
         .done();
+
+        const user = {username: username,
+          password: password}
   
       await storeAppUser();
+      navigation.navigate("Drawer");
+      route.params.setUser(user);
     } catch (err) {
       console.log('Error saving user to the database', err);
     }

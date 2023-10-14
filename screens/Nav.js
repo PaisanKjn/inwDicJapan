@@ -153,9 +153,7 @@ const Nav = ({route}) => {
               }
             >
               <Image
-                source={
-                  require(image)
-                }
+                source={require(image)}
                 style  = {styles.sideMenuProfileIcon}
               />
             </Pressable>
