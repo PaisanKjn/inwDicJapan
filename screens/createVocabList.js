@@ -41,15 +41,16 @@ const CreateVocabList = ({ navigation, route }) => {
 
   const saveToDB = async () => {
     try {
+      const formData = new FormData();
+      formData.append('user_id', userID);
+      formData.append('name', listName);
+
       await fetch("http://192.168.1.100:8080/vocablist", {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify({
-          user_id: userID,
-          name: listName,
-        }),
+        body: formData,
       })
         .then((response) => response.json())
         .then((responseData) => {
