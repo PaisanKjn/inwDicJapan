@@ -92,7 +92,7 @@ import {
               .then((responseData) => {
                 console.log(JSON.stringify(responseData));
               })
-            navigation.navigate("vocabStack", {screen: 'WordList', params: { vocabListID: vocabList.id, listName: vocabList.name} })
+            await navigation.navigate("vocabStack", {screen: 'WordList', params: { vocabListID: vocabList.id, listName: vocabList.name} })
             alert('Vocab added to the list!');
         } catch(e) {
             console.log('Error adding a vocab to the list', e)

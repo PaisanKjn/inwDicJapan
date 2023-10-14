@@ -29,9 +29,9 @@ const Wordlist = ({ route, navigation }) => {
 
   const fetchWordList = async () => {
     try {
-      const response = fetch("http://192.168.1.100:8080/vocabdetails?vocablist_id=" + vocabListID);
-      const data = response.json();
-      setWordList(data);
+      const response = await fetch("http://192.168.1.100:8080/vocabdetails?vocablist_id=" + vocabListID);
+      const data = await response.json();
+      await setWordList(data);
     } catch (e) {
       console.log("Error fetching word list", e);
     }
