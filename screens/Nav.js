@@ -254,7 +254,8 @@ const Nav = ({route}) => {
   function SearchStack() {
     return (
       // using a different stack because of a Modal
-      <_Stack.Navigator >
+      <_Stack.Navigator 
+      initialRouteName="Home" >
         <_Stack.Screen
           name="Home"
           component={Home}
@@ -280,7 +281,9 @@ const Nav = ({route}) => {
   // Vocab list and creating list
   function VocabStack() {
     return (
-      <_Stack.Navigator screenOptions={{cardOverlayEnabled: true, cardShadowEnabled: true}}>
+      <_Stack.Navigator 
+      initialRouteName="VocabList"
+      screenOptions={{cardOverlayEnabled: true, cardShadowEnabled: true}}>
         <_Stack.Screen
           name="VocabList"
           component={VocabList}
