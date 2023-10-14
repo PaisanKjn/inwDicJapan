@@ -23,7 +23,7 @@ const Score = ({ navigation, route }) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('timer', {difficulty: difficulty})}
+        onPress={() => navigation.navigate('timer', {difficulty: route.params.difficulty})}
       >
         <MaterialIcons name="replay" size={40} color= {COLORS.dicWhite}/>
       </TouchableOpacity>

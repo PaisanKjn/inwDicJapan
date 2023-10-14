@@ -68,9 +68,11 @@ const Result = ({ navigation, route }) => {
 
   const fetchWord = async () => {
     try {
-      const response = await fetch('http://localhost:8080/?vocab=' + searchQuery)
+      const url = 'http://192.168.1.100:8080/?vocab=' + route.params.searchQuery.toString()
+      const response = await fetch(url)
       const data = await response.json();
       setResult(data);
+      console.log(url)
     } catch(err) {
       console.log('Error fetching results', err)
     }

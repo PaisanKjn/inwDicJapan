@@ -43,11 +43,11 @@ const Login = ({ navigation, route }) => {
 
   const checkPass = async (userResult) => {
     let url =
-      "http://localhost:8080/user?name=" + username + "&password=" + password;
+      "http://192.168.1.100:8080/user?name=" + username + "&password="  + password;
 
     try {
-      const response = fetch(url);
-      const data = response.json();
+      const response = await fetch(url);
+      const data = await response.json();
 
       if (data.user.name == "") {
         alert("Your username or password is incorrect");

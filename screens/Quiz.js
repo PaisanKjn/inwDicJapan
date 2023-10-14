@@ -68,7 +68,6 @@ const Quiz = ({ navigation, route }) => {
   const animation = useSharedValue({ width: width });
 
 
-
   // If answer/timeout -> set answer
   useEffect(() => {
     if (isAnswered) {
