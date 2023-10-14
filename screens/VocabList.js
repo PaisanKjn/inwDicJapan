@@ -31,7 +31,7 @@ const VocabList = ({ navigation, route }) => {
   // Fetching User ID (so we can fetch the whole vocab lists)
   const fetchUserID = async () => {
     try {
-      const response = await fetch('http://localhost:8080/user?name=' + user.username + '&password=' + user.password)
+      const response = await fetch('http://192.168.1.100:8080/user?name=' + user.username + '&password=' + user.password)
       const data = await response.json();
       getVocabLists(data.user.id);
       setUserID(data.user.id)
@@ -44,7 +44,7 @@ const VocabList = ({ navigation, route }) => {
   const getVocabLists = async (userID) => {
     console.log("GETTING THE VOCAB LISTS");
     try {
-      const response = await fetch('http://localhost:8080/vocablist?user_id=' + userID)
+      const response = await fetch('http://192.168.1.100:8080/vocablist?user_id=' + userID)
       const data = await response.json();
       setVocabLists(data);
 

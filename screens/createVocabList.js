@@ -41,7 +41,7 @@ const CreateVocabList = ({ navigation, route }) => {
 
   const saveToDB = async () => {
     try {
-      await fetch("http://localhost:8080/vocablist", {
+      await fetch("http://192.168.1.100:8080/vocablist", {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",

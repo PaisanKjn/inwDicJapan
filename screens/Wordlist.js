@@ -30,7 +30,7 @@ const Wordlist = ({ route, navigation }) => {
 
   const fetchWordList = async () => {
     try {
-      const response = fetch("http://localhost:8080/vocabdetails?vocablist_id=" + vocabListID);
+      const response = fetch("http://192.168.1.100:8080/vocabdetails?vocablist_id=" + vocabListID);
       const data = response.json();
       setWordList(data);
     } catch (e) {
