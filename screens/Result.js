@@ -194,7 +194,7 @@ const Result = ({ navigation, route }) => {
     if (route.params?.user == null) {
       alert("You need an account to use this feature");
     } else {
-      navigation.navigate("VocabList", { item: item });
+      navigation.navigate("SelectList", { word: item, user: route.params?.user });
     }
   };
 

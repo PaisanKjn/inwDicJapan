@@ -11,7 +11,6 @@ import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import { SwipeListView } from "react-native-swipe-list-view";
 import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
 import SeparatorLine from "../components/SeparateLine";
