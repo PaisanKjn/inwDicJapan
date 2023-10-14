@@ -20,8 +20,7 @@ const CreateVocabList = ({ navigation, route }) => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
   const [listName, setListName] = useState("");
-  const [vocabLists, setVocabLists] = useState();
-  const { userID} = route.params;
+  const { userID, vocabLists} = route.params;
  
   const inputRef = useRef();
 
@@ -29,20 +28,7 @@ const CreateVocabList = ({ navigation, route }) => {
 
   }, []);
 
-  // Fetching Vocab lists
-  const getVocabLists = async (userID) => {
-    console.log("GETTING THE VOCAB LISTS");
-    try {
-      const response = await fetch('http://192.168.1.100:8080/vocablist?user_id=' + userID)
-      const data = await response.json();
-      await setVocabLists(data);
 
-    } catch (e) {
-      // error reading value
-      alert("Error fetching vocab lists", e);
-    }
-    console.log("DONEZO");
-  };
 
   const handleOnSubmit = async () => {
     // 1.loop the vocabLists data to see if the list already exists
@@ -86,7 +72,6 @@ const CreateVocabList = ({ navigation, route }) => {
 
   const isAlreadyExisted = async () => {
     // if there is no vocabLists in the first place
-    await getVocabLists(userID)
     if(vocabLists == null) {
       console.log('NULL')
       return false;
