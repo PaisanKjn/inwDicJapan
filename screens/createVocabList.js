@@ -66,7 +66,7 @@ const CreateVocabList = ({ navigation, route }) => {
   };
 
   const handleFinish = () => {
-    navigation.navigate("VocabList"); // might not be able to make the vocab list re-render *sad face*
+    navigation.push("VocabList"); // might not be able to make the vocab list re-render *sad face*
     alert("Vocab list created");
   };
 
