@@ -21,27 +21,36 @@ const Stack = createNativeStackNavigator();
 const VocabList = ({ navigation, route }) => {
   const [vocabLists, setVocabLists] = useState([]);
   const { user } = route.params;
+  const [userID, setUserID] = useState(0);
 
   // Trigger Vocab lists fetch
   useEffect(() => {
-    console.log("Current vocab user is " + user.username);
-    getVocabLists();
+    fetchUserID();
   }, []);
 
+  // Fetching User ID (so we can fetch the whole vocab lists)
+  const fetchUserID = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/user?name=' + user.username + '&password=' + user.password)
+      const data = await response.json();
+      getVocabLists(data.user.id);
+      setUserID(data.user.id)
+    } catch(e) {
+      console.log('Error fetching user ID', e);
+    }
+  }
+
   // Fetching Vocab lists
-  const getVocabLists = async () => {
+  const getVocabLists = async (userID) => {
     console.log("GETTING THE VOCAB LISTS");
     try {
-      const value = await AsyncStorage.getItem("vocabLists");
-      if (value !== null) {
-        _value = JSON.parse(value);
-        console.log(_value);
-        setVocabLists(_value);
-      }
+      const response = await fetch('http://localhost:8080/vocablist?user_id=' + userID)
+      const data = await response.json();
+      setVocabLists(data);
+
     } catch (e) {
       // error reading value
-      alert("ERROR RETREIVING");
-      console.log(e);
+      alert("Error fetching vocab lists", e);
     }
     console.log("DONEZO");
   };
@@ -49,9 +58,9 @@ const VocabList = ({ navigation, route }) => {
   // Render each vocab List
   const setView = ({ item }) => (
     <View>
-      {user.username === item.username ? (
+    
         <Pressable
-          onPress={() => navigation.navigate("WordList", { vocabList: item })}
+          onPress={() => navigation.navigate("WordList", { vocabListID: item.id, listName: item.name })}
           onLongPress={() => navigation.navigate("listOption")}
           android_ripple={{ foreground: true, color: COLORS.dicBlack3 }}
           style={{
@@ -62,50 +71,28 @@ const VocabList = ({ navigation, route }) => {
             justifyContent: 'space-between'
           }}
         >
-          <Text style={styles.text}>{item.listName}</Text>
+          <Text style={styles.text}>{item.name}</Text>
           <AntDesign name="right" size={30} color={COLORS.dicBlack4} />
         </Pressable>
-      ) : null}
+     
     </View>
   );
 
+  // Create a new vocab list modal
   const handleOnCreate = () => {
     console.log("Open a create new word list modal");
 
     navigation.navigate("createList", {
-      user: user.username,
+      userID: userID,
       vocabLists: vocabLists,
-      setVocabLists: setVocabLists,
     });
   };
 
-  // Current "setList" data is imported (needs to be changed)
+  // use "setList" for sample data otherwise use "vocabLists"
   return (
     <View style={[styles.container]}>
       <View>
-        <FlatList data={setList} renderItem={setView} />
-        {/* <SwipeListView
-          data={setList}
-          renderItem={(rowData, rowMap) => setView(rowData)}
-          renderHiddenItem={(rowData, rowMap) => (
-            <View
-              style={{
-                backgroundColor: COLORS.dicRed,
-                flex: 1,
-                alignItems: "flex-end",
-                justifyContent: "center",
-                paddingRight: 25,
-              }}
-            >
-              <Pressable onPress={() => handleOnDelete(rowData.item.listName)}>
-                <FontAwesome name="trash" size={30} color={COLORS.dicWhite} />
-              </Pressable>
-            </View>
-          )}
-          disableRightSwipe={true}
-          rightOpenValue={-70}
-          rightActionValue={-50}
-        /> */}
+        <FlatList data={vocabLists} renderItem={setView} />
       </View>
 
       

@@ -20,69 +20,65 @@ const CreateVocabList = ({ navigation, route }) => {
   const { current } = useCardAnimation();
   const { height } = useWindowDimensions();
   const [listName, setListName] = useState("");
-  const { user, vocabLists, setVocabLists } = route.params;
-  const vocabList = {
-    username: user,
-    listName: listName,
-    vocab: [],
-  };
+  const { userID, vocabLists } = route.params;
+ 
   const inputRef = useRef();
 
   useEffect(() => {
-    console.log("USER IS ");
-    console.log(user);
+
   }, []);
 
   const handleOnSubmit = () => {
-    // 1. fetch to see if the list already exists
+    // 1.loop the vocabLists data to see if the list already exists
     // 2. if not, save to DB using user ID
     // 3. navigate back
     if (isAlreadyExisted()) {
       alert("That name is already existed");
     } else {
-      handleSubmit();
+      saveToDB();
     }
-
-     // return fetch('')
-    // .then(response => response.json())
-    // .then(json => {
-    //   return json.user;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
   };
 
-  const handleSubmit = async () => {
+  const saveToDB = async () => {
     try {
-      const updatedVocabLists = [...vocabLists, vocabList];
-      setVocabLists(updatedVocabLists);
-      await AsyncStorage.setItem(
-        "vocabLists",
-        JSON.stringify(updatedVocabLists)
-      );
-      console.log("CREATED YAY");
-      handleFinish(updatedVocabLists);
+      await fetch("http://localhost:8080/vocablist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: JSON.stringify({
+          user_id: userID,
+          name: listName,
+        }),
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log(JSON.stringify(responseData));
+        })
+        .done();
+  
+      handleFinish();
     } catch (e) {
-      console.log(e);
+      console.log("Error creating a vocab list", e);
     }
   };
 
   const handleFinish = (updatedVocabLists) => {
-    navigation.navigate("VocabList", { updatedVocabLists: updatedVocabLists });
+    navigation.navigate("VocabList"); // might not be able to make the vocab list re-render *sad face*
     alert("Vocab list created");
   };
 
   const isAlreadyExisted = () => {
-    if (!vocabLists) {
+    // if there is no vocabLists in the first place
+    if(vocabLists == null) {
+      return false;
+    } else {
+      // looping through vocabList item to check their name
+      for (let i = 0; i < vocabLists.length; i++) {
+        if(vocabLists[i].name == listName) return true;
+      }
       return false;
     }
-    const result = vocabLists.filter((vocabLists) => {
-      if (listName == vocabLists.listName && user == vocabLists.username) {
-        return vocabLists;
-      }
-    });
-    return result.length > 0 ? true : false;
   };
 
   return (

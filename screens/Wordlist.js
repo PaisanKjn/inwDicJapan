@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Audio } from "expo-av";
@@ -17,42 +17,43 @@ import { COLORS } from "../styles/COLORS";
 import SeparatorLine from "../components/SeparateLine";
 import { useWindowDimensions } from "react-native";
 
-
-
 const Wordlist = ({ route, navigation }) => {
   const [repeat, setRepeat] = useState(1);
-  const { vocabList } = route.params;
+  const [wordList, setWordList] = useState();
+  const { vocabListID, listName } = route.params;
   const [sound, setSound] = useState();
   const { width, height } = useWindowDimensions();
+
+  useEffect(() => {
+    fetchWordList();
+  });
+
+  const fetchWordList = async () => {
+    try {
+      const response = fetch("http://localhost:8080/vocabdetails?vocablist_id=" + vocabListID);
+      const data = response.json();
+      setWordList(data);
+    } catch (e) {
+      console.log("Error fetching word list", e);
+    }
+  };
 
   const ItemView = ({ item }) => {
     return (
       //FlatList Item
       <Pressable
-        onLongPress={() => navigation.navigate('wordOption')}
+        onLongPress={() => navigation.navigate("wordOption")}
         style={styles.item}
         android_ripple={{ foreground: true, color: COLORS.dicBlack3 }}
       >
-
         <View>
-        <Text style={[styles.textList]}>
-          {item.vocab}
-        </Text>
-        <Text style={{ fontSize: 24, color: COLORS.dicBlack5 }}>
-          {item.meaning}
-        </Text>
+          <Text style={[styles.textList]}>{item.vocab}</Text>
+          <Text style={{ fontSize: 24, color: COLORS.dicBlack5 }}>
+            {item.meaning}
+          </Text>
         </View>
-      
       </Pressable>
     );
-  };
-
-  const handleOnHold = (item) => {
-    navigation.navigate('wordOption');
-  }
-
-  const handleOnDelete = (item) => {
-    alert(item.vocab + " is deleted");
   };
 
   const handleOnPress = () => {
@@ -64,7 +65,7 @@ const Wordlist = ({ route, navigation }) => {
   };
 
   const handleOnSpeak = () => {
-    if (vocabList.vocab.length > 0) {
+    if (wordList.length > 0) {
       handleSpeak();
     } else {
       alert("You don't have any vocab in your list yet!");
@@ -73,15 +74,15 @@ const Wordlist = ({ route, navigation }) => {
 
   const handleSpeak = async () => {
     for (let j = 1; j <= repeat; j++) {
-      for (let i = 0; i < vocabList.vocab.length; i++) {
-        let word = vocabList.vocab[i].vocab;
+      for (let i = 0; i < wordList.length; i++) {
+        let word = wordList[i].vocab;
         let voiceURLJP =
           "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=ja-jp&c=MP3&v=Akira&src=" +
           word;
         await playSound(voiceURLJP); // Send an API url for GET request
         await sleep(500);
 
-        word = vocabList.vocab[i].meaning;
+        word = wordList[i].meaning;
         let voiceURLTH =
           "http://api.voicerss.org/?key=3d4781b06455498f835c40ad18642941&hl=th-th&c=MP3&src=" +
           word;
@@ -117,13 +118,13 @@ const Wordlist = ({ route, navigation }) => {
     <View style={[{ flex: 1, backgroundColor: COLORS.dicBlack1 }]}>
       <View style={styles.topContainer}>
         <Text style={[Global.h1, { textAlign: "left" }]}>
-          {vocabList.listName}
+          {listName}
         </Text>
         <SeparatorLine />
       </View>
       <View style={styles.bottomContainer}>
         <FlatList
-          data={vocabList.vocab}
+          data={wordList}
           renderItem={ItemView}
           keyExtractor={(item) => item.meaning.toString()}
         />
