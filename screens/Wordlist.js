@@ -10,6 +10,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 import { Audio } from "expo-av";
 import Global from "../styles/Global";
 import { COLORS } from "../styles/COLORS";
@@ -128,6 +129,11 @@ const Wordlist = ({ route, navigation }) => {
           keyExtractor={(item) => item.meaning.toString()}
         />
       </View>
+
+      <TouchableOpacity
+      style = {[styles.buttonSquare, {backgroundColor: null, left: 0}]}>
+      <AntDesign name="left" size={35} color={COLORS.dicBlack4} />
+      </TouchableOpacity>
 
       {/* Sound buttons */}
       <TouchableOpacity
