@@ -37,6 +37,7 @@ import Score from "./Score";
 import Result from "./Result";
 import WordOption from "./WordOption";
 import ListOption from "./ListOption"
+import SelectList from "./SelectList";
 import { COLORS } from "../styles/COLORS";
 import * as NavigationBar from "expo-navigation-bar";
 
@@ -266,20 +267,12 @@ const Nav = ({route}) => {
           options={{ headerShown: false }}
         />
         <_Stack.Screen
-          name="VocabList"
-          component={VocabList}
-          initialParams={{ user: user }}
+          name="SelectList"
+          component={SelectList}
+          //initialParams={{ user: user }}
           options={{ headerShown: false }}
         />
 
-        <_Stack.Screen
-          name="createList"
-          component={CreateVocabList}
-          options={{
-            presentation: "transparentModal",
-            headerShown: false,
-          }}
-        />
       </_Stack.Navigator>
     );
   }
