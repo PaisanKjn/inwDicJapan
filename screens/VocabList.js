@@ -33,8 +33,8 @@ const VocabList = ({ navigation, route }) => {
     try {
       const response = await fetch('http://192.168.1.100:8080/user?name=' + user.username + '&password=' + user.password)
       const data = await response.json();
-      getVocabLists(data.user.id);
-      setUserID(data.user.id)
+      await getVocabLists(data.user.id);
+      await setUserID(data.user.id)
     } catch(e) {
       console.log('Error fetching user ID', e);
     }
@@ -46,7 +46,7 @@ const VocabList = ({ navigation, route }) => {
     try {
       const response = await fetch('http://192.168.1.100:8080/vocablist?user_id=' + userID)
       const data = await response.json();
-      setVocabLists(data);
+      await setVocabLists(data);
 
     } catch (e) {
       // error reading value

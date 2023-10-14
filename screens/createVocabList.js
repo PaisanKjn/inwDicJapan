@@ -28,11 +28,11 @@ const CreateVocabList = ({ navigation, route }) => {
 
   }, []);
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async () => {
     // 1.loop the vocabLists data to see if the list already exists
     // 2. if not, save to DB using user ID
     // 3. navigate back
-    if (isAlreadyExisted()) {
+    if (await isAlreadyExisted()) {
       alert("That name is already existed");
     } else {
       saveToDB();
@@ -58,7 +58,7 @@ const CreateVocabList = ({ navigation, route }) => {
         })
         .done();
   
-      handleFinish();
+      await handleFinish();
     } catch (e) {
       console.log("Error creating a vocab list", e);
     }
@@ -69,14 +69,16 @@ const CreateVocabList = ({ navigation, route }) => {
     alert("Vocab list created");
   };
 
-  const isAlreadyExisted = () => {
+  const isAlreadyExisted = async () => {
     // if there is no vocabLists in the first place
     if(vocabLists == null) {
+      console.log('NULL')
       return false;
     } else {
       // looping through vocabList item to check their name
       for (let i = 0; i < vocabLists.length; i++) {
-        if(vocabLists[i].name == listName) return true;
+        console.log('vocabList No.' + i + ': ' + vocabLists[i].name)
+        if(vocabLists[i].name == listName) {return true;}
       }
       return false;
     }
