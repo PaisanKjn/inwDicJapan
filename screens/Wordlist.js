@@ -130,12 +130,12 @@ const Wordlist = ({ route, navigation }) => {
         />
       </View>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
       style = {[styles.buttonSquare, {backgroundColor: null, left: 0}]}
       onPress = {() => navigation.goBack()}
       >
       <AntDesign name="left" size={35} color={COLORS.dicBlack4} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* Sound buttons */}
       <TouchableOpacity

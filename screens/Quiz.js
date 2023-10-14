@@ -201,7 +201,7 @@ const Quiz = ({ navigation, route }) => {
       <Animated.View
         style={[reducedWidth, { backgroundColor: COLORS.dicWhite, height: 15 }]}
       >
-        <Text>{time}</Text>
+        {/* <Text>{time}</Text> */}
       </Animated.View>
       <Text style={[styles.question]}>{word}</Text>
       <SafeAreaView style={{ flex: 1 }}>
