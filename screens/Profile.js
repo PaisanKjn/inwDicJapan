@@ -88,7 +88,7 @@ const Profile = ({ navigation, route }) => {
         >
           <Image
             source={
-              require(img)
+              require("../components/default.jpg")
             }
             style={[styles.circle, styles.pic]}
           />

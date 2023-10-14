@@ -154,7 +154,7 @@ const Nav = ({route}) => {
             >
               <Image
                 source={
-                  require(image)
+                  require("../components/default.jpg")
                 }
                 style  = {styles.sideMenuProfileIcon}
               />
