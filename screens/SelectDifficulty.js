@@ -59,6 +59,13 @@ const SelectDifficulty = ({ navigation }) => {
     };
   });
 
+  const handleOnPress = () => {
+    if(difficulty == 0) {
+      alert("Please select difficulty");
+    } else {
+      navigation.navigate("timer", {difficulty: difficulty});
+    }
+  }
   const Line = () => {
     return(
          <View style = {styles.Line}/>
@@ -193,9 +200,7 @@ const SelectDifficulty = ({ navigation }) => {
       {/* START Button */}
       <TouchableOpacity
         style={styles.buttonCicle}
-        onPress={() => {
-          navigation.navigate("timer", {difficulty: difficulty});
-        }}
+        onPress = {handleOnPress()}
       >
        <AntDesign name="caretright" size={24} color= {COLORS.dicWhite} />
       </TouchableOpacity>
