@@ -113,7 +113,7 @@ const Nav = ({route}) => {
         <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
-        <Text style={{ color: COLORS.dicBlack4, margin: 10 }}>Version 0.1.0</Text>
+        <Text style={{ color: COLORS.dicBlack4, margin: 10 }}>Version 1.0.0</Text>
       </SafeAreaView>
     );
   }
@@ -192,7 +192,7 @@ const Nav = ({route}) => {
         />
         <Drawer.Screen
           name="quizStack"
-          component={QuizStack} // component = {user? QuizStack : Redirect}
+          component = {user? QuizStack : Redirect}
           options={{
             title: "Quiz",
             drawerIcon: ({ focused, size }) => (

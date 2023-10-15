@@ -93,7 +93,6 @@ const Register = ({ route, navigation }) => {
         .then((responseData) => {
           console.log(JSON.stringify(responseData));
         })
-        .done();
 
         const user = {username: username,
           password: password}
