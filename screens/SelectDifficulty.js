@@ -200,7 +200,7 @@ const SelectDifficulty = ({ navigation }) => {
       {/* START Button */}
       <TouchableOpacity
         style={styles.buttonCicle}
-        onPress = {handleOnPress()}
+        onPress = {() => handleOnPress()}
       >
        <AntDesign name="caretright" size={24} color= {COLORS.dicWhite} />
       </TouchableOpacity>
